@@ -41,25 +41,25 @@
                     <label for="nickname">Nickname</label>
                     <input type="text" class="inputText" id="nickname" name="nickname" autofocus required><br>
 
-                    <label for="zipcode">Zipcode</label>
+                    <label for="zipcode">Zip code</label>
                     <input type="text" class="inputText" id="zipcode" name="zipcode" required><br>
 
 
-                    <input type="radio" name="units" value="Fahrenheit" id="fahrenheit">
+                    <input type="radio" name="units" value="Fahrenheit" id="fahrenheit" checked="checked" required>
                     <label for="fahrenheit">Fahrenheit</label>
 
-                    <input type="radio" name="units" value="Celcius" id="celcius">
+                    <input type="radio" name="units" value="Celcius" id="celcius" required>
                     <label for="celcius">Celcius</label>
                     <br><br>
                     <fieldset>
                         <legend> Temperature Preferences </legend>
 
-                        Temperature I consider "cold": <input type="text" class="inputTemp" id="coldmax" name="coldmax" placeholder="50"> and below.<br>
-                        Temperature I consider "cool": <input type="text" class="inputTemp" id="coolmin" name="coolmin" placeholder="51" disabled> to <input type="text" class="inputTemp" id="coolmax" name="coolmax" placeholder="75"><br>
+                        Temperature I consider "cold": <input type="text" class="inputTemp" id="coldmax" name="coldmax" placeholder="50" required> and below.<br>
 
-                        Temperature I consider "warm": <input type="text" class="inputTemp" id="warmmin" name="warmmin" placeholder="76" disabled> to <input type="text" class="inputTemp" id="warmmax" name="warmmax" placeholder="85"><br>
+                        Temperature I consider "mild": <input type="text" class="inputTemp" id="mildmin" name="mildmin" placeholder="51" disabled required> to <input type="text" class="inputTemp" id="mildmax" name="mildmax" placeholder="80" required><br>
 
-                        Temperature I consider "hot": <input type="text" class="inputTemp" id="hotmax" name="hotmax" placeholder="85" disabled> and above.
+
+                        Temperature I consider "hot": <input type="text" class="inputTemp" id="hotmax" name="hotmax" placeholder="80" disabled required> and above.
 
                     </fieldset>
 
