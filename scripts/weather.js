@@ -40,8 +40,6 @@ $(document).ready(function() {
             hotMax: parseInt($("#hotmax").val())
         };
 
-        //console.log(formInfo);
-
         if (formData.mildMin > formData.coldMax && formData.mildMax > formData.mildMin && formData.hotMax > formData.mildMax && (/(^\d{5}$)|(^\d{5}-\d{4}$)/).test(formData.zipcode)){
             ajaxCalls(formData);
         } else {
@@ -69,7 +67,7 @@ $(document).ready(function() {
 
         $xhr_google.done(function(googleData) {
             // console.log("GOOGLE API REQUEST NO PROBLEM!");
-            //console.log(googleData);
+            console.log(googleData);
             latitude = googleData.results[0].geometry.location.lat;
             longitude = googleData.results[0].geometry.location.lng;
 
@@ -79,10 +77,10 @@ $(document).ready(function() {
 
                 //console.log("DARKSKY API REQUEST NO PROBLEM!");
                 //console.log(darkskyData);
-            });
+            }); //END $xhr_darksky.done
 
 
-        });
+        }); //END $xhr_google.done
 
 
 
