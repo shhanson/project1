@@ -8,17 +8,20 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
 
+    <!--Reset CSS-->
+    <link rel="stylesheet" href="styles/reset.css">
+
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+
+    <!--Custom CSS for form-->
+    <link rel="stylesheet" href="./styles/form.css">
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
 
-    <style>
-        div {
-            /*border: 1px solid pink;*/
-        }
-    </style>
+
+
 </head>
 
 <body class="grey lighten-1">
@@ -32,14 +35,14 @@
         </div>
         <!--End Header container-->
 
-        <div class="container white">
-            <div class="col s6">
-                <form>
+        <div class="container">
+            <div class="col s12">
+                <form class="white">
                     <label for="nickname">Nickname</label>
-                    <input type="text" id="nickname" name="nickname" autofocus required>
+                    <input type="text" class="inputText" id="nickname" name="nickname" autofocus required><br>
 
                     <label for="zipcode">Zipcode</label>
-                    <input type="text" id="zipcode" name="zipcode" required>
+                    <input type="text" class="inputText" id="zipcode" name="zipcode" required><br>
 
 
                     <input type="radio" name="units" value="Fahrenheit" id="fahrenheit">
@@ -51,17 +54,19 @@
                     <fieldset>
                         <legend> Temperature Preferences </legend>
 
-                        <span>Temperature I consider "cold": <input type="text" id="coldmax" name="coldmax" placeholder="50"> and below.</span><br>
+                        Temperature I consider "cold": <input type="text" class="inputTemp" id="coldmax" name="coldmax" placeholder="50"> and below.<br>
+                        Temperature I consider "cool": <input type="text" class="inputTemp" id="coolmin" name="coolmin" placeholder="51" disabled> to <input type="text" class="inputTemp" id="coolmax" name="coolmax" placeholder="75"><br>
 
-                        Temperature I consider "cool": <input type="text" id="coolmin" name="coolmin" placeholder="51"> to <input type="text" id="coolmax" name="coolmax" placeholder="75">
+                        Temperature I consider "warm": <input type="text" class="inputTemp" id="warmmin" name="warmmin" placeholder="76" disabled> to <input type="text" class="inputTemp" id="warmmax" name="warmmax" placeholder="85"><br>
 
-                        Temperature I consider "warm": <input type="text" id="warmmin" name="warmmin" placeholder="76"> to <input type="text" id="warmmax" name="warmmax" placeholder="85">
-
-                        <span>Temperature I consider "hot": <input type="text" id="hotmax" name="hotmax" placeholder="85"> and above.</span>
+                        Temperature I consider "hot": <input type="text" class="inputTemp" id="hotmax" name="hotmax" placeholder="85" disabled> and above.
 
                     </fieldset>
-                    <button id="clear" type="button">Clear</button>
-                    <input type="submit" id="submit">
+
+                    <div class="center-align">
+                        <button id="clear" type="button" class="waves-effect waves-light btn">Clear</button>
+                        <input type="submit" id="submit" value="Submit" class="waves-effect waves-light btn">
+                    </div>
 
                 </form>
             </div>
@@ -73,7 +78,7 @@
     <!-- End Main container -->
 
 
-    <!-- <script src="scripts/weather.js"></script> -->
+    <script src="scripts/weather.js"></script>
 </body>
 
 </html>
