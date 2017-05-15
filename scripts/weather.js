@@ -13,7 +13,7 @@ $(document).ready(function() {
 
     $xhr_google.done(function(google_data){
         console.log("GOOGLE API REQUEST NO PROBLEM!");
-        console.log(google_data);
+        //console.log(google_data);
 
 
     });
