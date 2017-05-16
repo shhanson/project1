@@ -4,6 +4,18 @@ $(document).ready(function() {
     const NICKNAME_REGEX = /^[A-Za-z0-9_\-]{4,}$/;
     const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const ICONS = {
+        "clear-day": "./images/darkskyicons/clear-day.png",
+        "clear-night": "./images/darkskyicons/clear-night.png",
+        "cloudy": "./images/darkskyicons/cloudy.png",
+        "fog": "./images/darkskyicons/fog.png",
+        "partly-cloudy-day": "./images/darkskyicons/partly-cloudy-day.png",
+        "partly-cloudy-night": "./images/darkskyicons/partly-cloudy-night.png",
+        "rain": "./images/darkskyicons/rain.png",
+        "sleet": "./images/darkskyicons/sleet.png",
+        "snow": "./images/darkskyicons/snow.png",
+        "wind": "./images/darkskyicons/wind.png"
+    }
 
     //Listener for "validation" of #nickname field
     $("#nickname").change(function() {
@@ -59,13 +71,16 @@ $(document).ready(function() {
             currMinutes = "0" + currMinutes;
         }
         let currTime = `${date.getHours()}:${currMinutes}`
+        let currIcon = ICONS[tempData.currentIcon];
+        let summIcon = ICONS[tempData.dayIcon];
+
 
 
 
         let $mainCol = $("#resultpage div:first-child");
         let $innerCol = $("<div class='col s12 white'></div>");
         let $outfitContainer = $("<img src='http://placehold.it/450x450'>");
-        let $infoDiv = $(`<div class='col s12 white'><div class='row'> <div class='col s6'><p><strong>Currently:</strong><br> ${currDate} @ ${currTime}</p><h2>${tempData.currentTemp} ${symbol}</h2></div> <div class='col s6'><p><strong>Summary:</strong><br>High: ${tempData.highTemp.temp}${symbol} @ ${tempData.highTemp.timestamp}, Low: ${tempData.lowTemp.temp}${symbol} @ ${tempData.lowTemp.timestamp}</p></div>   </div></div>`);
+        let $infoDiv = $(`<div class='col s12 white'><div class='row'> <div class='col s6'><p><strong>Currently:</strong><br> ${currDate} @ ${currTime}</p><h2>${tempData.currentTemp} ${symbol}</h2><img src='${currIcon}'></div> <div class='col s6'><p><strong>24-hr Summary:</strong><br>High: ${tempData.highTemp.temp}${symbol} @ ${tempData.highTemp.timestamp}, Low: ${tempData.lowTemp.temp}${symbol} @ ${tempData.lowTemp.timestamp}</p><img src='${summIcon}'></div>   </div></div>`);
 
         $mainCol.append(`<h4 class="center-align">${formData.nickname} you should wear...</h4>`);
         $mainCol.append($innerCol);
@@ -134,8 +149,6 @@ $(document).ready(function() {
                     highTemp: getHighTemp(darkskyData.hourly.data),
                     lowTemp: getLowTemp(darkskyData.hourly.data)
                 };
-                //console.log(tempData.highTemp);
-                //console.log(tempData.lowTemp);
 
                 displayResults(formData, tempData);
 
@@ -167,13 +180,6 @@ $(document).ready(function() {
         }
 
         forecastObj.timestamp = `${hour}:${minutes}`
-        //console.log(forecastObj);
-
-
-
-
-        //console.log(forecastObj);
-
         return forecastObj;
     }
 
@@ -198,8 +204,6 @@ $(document).ready(function() {
         }
 
         forecastObj.timestamp = `${hour}:${minutes}`
-        //console.log(forecastObj);
-
         return forecastObj;
     }
 
