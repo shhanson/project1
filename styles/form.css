@@ -5,3 +5,7 @@ input.inputText{
 input.inputTemp {
     width: 5%;
 }
+
+#resultpage{
+    display: none;
+}

@@ -1,5 +1,21 @@
 $(document).ready(function() {
 
+    const ZIP_REGEX = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
+    const NICKNAME_REGEX = /^[A-Za-z0-9_\-]{4,}$/;
+
+    $("#nickname").change(function(){
+        if(!NICKNAME_REGEX.test($("#nickname").val())){
+            Materialize.toast('Nickname must be at least 4 characters in length, alphanumeric, "-" and "_" allowed', 4000);
+        }
+    });
+
+    $("#zipcode").change(function(){
+        if(!ZIP_REGEX.test($("#zipcode").val())){
+            Materialize.toast('Invalid ZIP code format', 4000);
+        }
+
+    });
+
     //Listener for #coldmax field. Populates other field ranges based on input.
     $("#coldmax").change(function() {
         $("#mildmin").val(parseInt($("#coldmax").val()) + 1);
@@ -24,7 +40,14 @@ $(document).ready(function() {
     //Listener for form submission
     $("form").submit(function(event) {
         event.preventDefault();
-        processForm();
+        let formData = processForm();
+
+
+        ajaxCalls(formData);
+        $("#page1").toggle();
+        $("#resultpage").toggle();
+
+
     });
 
     //Function to validate and process form input
@@ -40,12 +63,14 @@ $(document).ready(function() {
             hotMax: parseInt($("#hotmax").val())
         };
 
-        if (formData.mildMin > formData.coldMax && formData.mildMax > formData.mildMin && formData.hotMax > formData.mildMax && (/(^\d{5}$)|(^\d{5}-\d{4}$)/).test(formData.zipcode)){
-            ajaxCalls(formData);
+        //Validating the fields before submission again JUST IN CASE
+        if (formData.mildMin > formData.coldMax && formData.mildMax > formData.mildMin && formData.hotMax > formData.mildMax && ZIP_REGEX.test(formData.zipcode) && NICKNAME_REGEX.test(formData.nickname)){
+            return formData;
         } else {
             Materialize.toast("Input error!", 4000);
             return;
         }
+
 
     }//END processForm
 
