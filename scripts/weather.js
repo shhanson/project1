@@ -75,12 +75,10 @@ $(document).ready(function() {
         let summIcon = ICONS[tempData.dayIcon];
 
 
-
-
         let $mainCol = $("#resultpage div:first-child");
         let $innerCol = $("<div class='col s12 white'></div>");
         let $outfitContainer = $("<img src='http://placehold.it/450x450'>");
-        let $infoDiv = $(`<div class='col s12 white'><div class='row'> <div class='col s6'><p><strong>Currently:</strong><br> ${currDate} @ ${currTime}</p><h2>${tempData.currentTemp} ${symbol}</h2><img src='${currIcon}'></div> <div class='col s6'><p><strong>24-hr Summary:</strong><br>High: ${tempData.highTemp.temp}${symbol} @ ${tempData.highTemp.timestamp}, Low: ${tempData.lowTemp.temp}${symbol} @ ${tempData.lowTemp.timestamp}</p><img src='${summIcon}'></div>   </div></div>`);
+        let $infoDiv = $(`<div class='col s12 white'><div class='row'> <div class='col s6'><p><strong>Currently:</strong><br> ${currDate} @ ${currTime}</p><h2 style='display: inline'>${tempData.currentTemp} ${symbol}</h2><img class='icon' src='${currIcon}'></div> <div class='col s6'><p><strong>24-hr Summary:</strong><br>High: ${tempData.highTemp.temp}${symbol} @ ${tempData.highTemp.timestamp}, Low: ${tempData.lowTemp.temp}${symbol} @ ${tempData.lowTemp.timestamp}</p><img class='icon' src='${summIcon}'></div>   </div></div>`);
 
         $mainCol.append(`<h4 class="center-align">${formData.nickname} you should wear...</h4>`);
         $mainCol.append($innerCol);
@@ -134,8 +132,6 @@ $(document).ready(function() {
 
 
         $xhr_google.done(function(googleData) {
-            // console.log("GOOGLE API REQUEST NO PROBLEM!");
-            //console.log(googleData);
             latitude = googleData.results[0].geometry.location.lat;
             longitude = googleData.results[0].geometry.location.lng;
 
@@ -149,7 +145,7 @@ $(document).ready(function() {
                     highTemp: getHighTemp(darkskyData.hourly.data),
                     lowTemp: getLowTemp(darkskyData.hourly.data)
                 };
-
+                generateOutfit(formData, tempData);
                 displayResults(formData, tempData);
 
             }); //END $xhr_darksky.done
@@ -158,6 +154,10 @@ $(document).ready(function() {
 
         return tempData;
     } //END ajaxCalls
+
+    function generateOutfit(formData, tempData){
+
+    }
 
     function getHighTemp(array) {
         let forecastObj = {};
@@ -171,14 +171,12 @@ $(document).ready(function() {
         }
 
         forecastObj.temp = Math.round(maxTemp);
-        //let dateFormat = require('dateformat');
         let date = new Date(maxTempTime * 1000);
         let hour = date.getHours();
         let minutes = date.getMinutes();
         if(minutes < 10){
             minutes = "0" + minutes;
         }
-
         forecastObj.timestamp = `${hour}:${minutes}`
         return forecastObj;
     }
@@ -195,14 +193,12 @@ $(document).ready(function() {
         }
 
         forecastObj.temp = Math.round(minTemp);
-
         let date = new Date(minTempTime * 1000);
         let hour = date.getHours();
         let minutes = date.getMinutes();
         if(minutes < 10){
             minutes = "0" + minutes;
         }
-
         forecastObj.timestamp = `${hour}:${minutes}`
         return forecastObj;
     }

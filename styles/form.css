@@ -9,3 +9,7 @@ input.inputTemp {
 #resultpage{
     display: none;
 }
+
+.icon {
+    width: 96px;
+}
