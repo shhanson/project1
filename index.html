@@ -21,6 +21,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
 
 
+    <style>
+        div {
+            padding: 8px;
+        }
+    </style>
+
+
 
 </head>
 
@@ -35,44 +42,50 @@
         </div>
         <!--End Header container-->
 
+        <!-- Page1 container -->
         <div class="container" id="page1">
-            <div class="col s12">
-                <form class="white">
-                    <label for="nickname">Nickname</label>
-                    <input type="text" class="inputText" id="nickname" name="nickname" autofocus required><br>
+                <div class="col s12 white">
+                    <form>
+                        <label for="nickname">Nickname</label>
+                        <input type="text" class="inputText" id="nickname" name="nickname" autofocus required><br>
 
-                    <label for="zipcode">ZIP code</label>
-                    <input type="text" class="inputText" id="zipcode" name="zipcode" required><br>
+                        <label for="zipcode">ZIP code</label>
+                        <input type="text" class="inputText" id="zipcode" name="zipcode" required><br>
 
 
-                    <input type="radio" name="units" value="Fahrenheit" id="fahrenheit" checked="checked" required>
-                    <label for="fahrenheit">Fahrenheit</label>
+                        <input type="radio" name="units" value="Fahrenheit" id="fahrenheit" checked="checked" required>
+                        <label for="fahrenheit">Fahrenheit</label>
 
-                    <input type="radio" name="units" value="Celcius" id="celcius" required>
-                    <label for="celcius">Celcius</label>
-                    <br><br>
-                    <fieldset>
-                        <legend> Temperature Preferences </legend>
+                        <input type="radio" name="units" value="Celcius" id="celcius" required>
+                        <label for="celcius">Celcius</label>
+                        <br><br>
+                        <fieldset>
+                            <legend> Temperature Preferences </legend>
 
-                        Temperature I consider "cold": <input type="text" class="inputTemp" id="coldmax" name="coldmax" placeholder="50" required> and below.<br> Temperature I consider "mild": <input type="text" class="inputTemp" id="mildmin" name="mildmin"
-                            placeholder="51" disabled required> to <input type="text" class="inputTemp" id="mildmax" name="mildmax" placeholder="80" required><br> Temperature I consider "hot": <input type="text" class="inputTemp" id="hotmax" name="hotmax"
-                            placeholder="80" disabled required> and above.
+                            Temperature I consider "cold": <input type="text" class="inputTemp" id="coldmax" name="coldmax" placeholder="50" required> and below.<br> Temperature I consider "mild": <input type="text" class="inputTemp" id="mildmin" name="mildmin"
+                                placeholder="51" disabled required> to <input type="text" class="inputTemp" id="mildmax" name="mildmax" placeholder="80" required><br> Temperature I consider "hot": <input type="text" class="inputTemp" id="hotmax" name="hotmax"
+                                placeholder="80" disabled required> and above.
 
-                    </fieldset>
+                        </fieldset>
 
-                    <div class="center-align">
-                        <button id="clear" type="button" class="waves-effect waves-light btn">Clear</button>
-                        <input type="submit" id="submit" value="Submit" class="waves-effect waves-light btn">
-                    </div>
+                        <div class="center-align">
+                            <button id="clear" type="button" class="waves-effect waves-light btn">Clear</button>
+                            <input type="submit" id="submit" value="Submit" class="waves-effect waves-light btn">
+                        </div>
 
-                </form>
-            </div>
+                    </form>
+                </div>
         </div>
         <!-- End page1 container -->
 
         <!-- Result container -->
         <div class="container" id="resultpage">
-            <p>SECRET!!</p>
+
+            <div class="col s12">
+            </div>
+
+
+
         </div>
         <!-- End result container -->
 
