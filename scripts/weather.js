@@ -1,5 +1,6 @@
 $(document).ready(function() {
 
+    //Constants
     const ZIP_REGEX = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
     const NICKNAME_REGEX = /^[A-Za-z0-9_\-]{4,}$/;
     const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -66,19 +67,22 @@ $(document).ready(function() {
         let symbol = ((formData.units === "Celcius") ? "&#8451" : "&#8457");
         let date = new Date();
         let currDate = `${DAYS[date.getDay()]} ${MONTHS[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
-        let currMinutes = date.getMinutes();
-        if(currMinutes < 10){
-            currMinutes = "0" + currMinutes;
-        }
+        let currMinutes = formatMinutes(date.getMinutes());
         let currTime = `${date.getHours()}:${currMinutes}`
         let currIcon = ICONS[tempData.currentIcon];
+        let currTemp = calcTemp(formData.units, tempData.currentTemp);
+
         let summIcon = ICONS[tempData.dayIcon];
+        let highTemp = calcTemp(formData.units, tempData.highTemp.temp);
+        let lowTemp = calcTemp(formData.units, tempData.lowTemp.temp);
+
+
 
 
         let $mainCol = $("#resultpage div:first-child");
         let $innerCol = $("<div class='col s12 white'></div>");
         let $outfitContainer = $("<img src='http://placehold.it/450x450'>");
-        let $infoDiv = $(`<div class='col s12 white'><div class='row'> <div class='col s6'><p><strong>Currently:</strong><br> ${currDate} @ ${currTime}</p><h2 style='display: inline'>${tempData.currentTemp} ${symbol}</h2><img class='icon' src='${currIcon}'></div> <div class='col s6'><p><strong>24-hr Summary:</strong><br>High: ${tempData.highTemp.temp}${symbol} @ ${tempData.highTemp.timestamp}, Low: ${tempData.lowTemp.temp}${symbol} @ ${tempData.lowTemp.timestamp}</p><img class='icon' src='${summIcon}'></div>   </div></div>`);
+        let $infoDiv = $(`<div class='col s12 white'><div class='row'> <div class='col s6'><p><strong>Currently:</strong><br> ${currDate} @ ${currTime}</p><h2 style='display: inline'>${currTemp} ${symbol}</h2><img class='icon' src='${currIcon}'></div> <div class='col s6'><p><strong>8-hr Summary:</strong><br>High: ${highTemp}${symbol} @ ${tempData.highTemp.timestamp}, Low: ${lowTemp}${symbol} @ ${tempData.lowTemp.timestamp}</p><img class='icon' src='${summIcon}'></div>   </div></div>`);
 
         $mainCol.append(`<h4 class="center-align">${formData.nickname} you should wear...</h4>`);
         $mainCol.append($innerCol);
@@ -155,7 +159,7 @@ $(document).ready(function() {
         return tempData;
     } //END ajaxCalls
 
-    function generateOutfit(formData, tempData){
+    function generateOutfit(formData, tempData) {
 
     }
 
@@ -163,7 +167,7 @@ $(document).ready(function() {
         let forecastObj = {};
         let maxTemp = Number.MIN_SAFE_INTEGER;
         let maxTempTime;
-        for (let i = 0; i < 24; i++) {
+        for (let i = 0; i < 8; i++) {
             if (array[i].apparentTemperature > maxTemp) {
                 maxTemp = array[i].apparentTemperature;
                 maxTempTime = array[i].time;
@@ -173,10 +177,7 @@ $(document).ready(function() {
         forecastObj.temp = Math.round(maxTemp);
         let date = new Date(maxTempTime * 1000);
         let hour = date.getHours();
-        let minutes = date.getMinutes();
-        if(minutes < 10){
-            minutes = "0" + minutes;
-        }
+        let minutes = formatMinutes(date.getMinutes());
         forecastObj.timestamp = `${hour}:${minutes}`
         return forecastObj;
     }
@@ -185,7 +186,7 @@ $(document).ready(function() {
         let forecastObj = {};
         let minTemp = Number.MAX_SAFE_INTEGER;
         let minTempTime;
-        for (let i = 0; i < 24; i++) {
+        for (let i = 0; i < 8; i++) {
             if (array[i].apparentTemperature < minTemp) {
                 minTemp = array[i].apparentTemperature;
                 minTempTime = array[i].time;
@@ -195,12 +196,17 @@ $(document).ready(function() {
         forecastObj.temp = Math.round(minTemp);
         let date = new Date(minTempTime * 1000);
         let hour = date.getHours();
-        let minutes = date.getMinutes();
-        if(minutes < 10){
-            minutes = "0" + minutes;
-        }
+        let minutes = formatMinutes(date.getMinutes());
         forecastObj.timestamp = `${hour}:${minutes}`
         return forecastObj;
+    }
+
+    function formatMinutes(minutes) {
+        return (minutes < 10) ? "0" + minutes : minutes;
+    }
+
+    function calcTemp(unit, temp){
+        return (unit === "Celcius") ? Math.round((temp - 32) * (5 / 9)) : temp;
     }
 
 
