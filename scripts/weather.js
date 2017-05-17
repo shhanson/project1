@@ -57,6 +57,8 @@ $(document).ready(function() {
         "clear-day": ["Sunglasses"]
     };
 
+
+
     //Listener for "validation" of #nickname field
     $("#nickname").change(function() {
         if (!NICKNAME_REGEX.test($("#nickname").val())) {
@@ -160,9 +162,9 @@ $(document).ready(function() {
         let $shoes = $("<h3></h3>");
 
         if(outfit.closedToeShoes){
-            $shoes.text("Closed-toed shoes");
+            $shoes.text("Closed-toe shoes");
         } else {
-            $shoes.text("Open-toed shoes");
+            $shoes.text("Open-toe shoes");
         }
         $innerCol.append($shoes);
 
@@ -202,17 +204,22 @@ $(document).ready(function() {
 
 
 
-        let symbol = ((formData.units === "Celcius") ? "&#8451" : "&#8457");
+
         let date = new Date();
         let currDate = `${DAYS[date.getDay()]} ${MONTHS[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
         let currMinutes = formatMinutes(date.getMinutes());
-        let currTime = `${date.getHours()}:${currMinutes}`
+        let ampm = (date.getHours() >= 12) ? "PM" : "AM";
+        let currHour = (date.getHours() > 12 ) ? date.getHours() % 12 : date.getHours();
+        let currTime = `${currHour}:${currMinutes} ${ampm}`;
+
         let currIcon = ICONS[tempData.currentIcon];
         let currTemp = calcTemp(formData.units, tempData.currentTemp);
+        let symbol = ((formData.units === "Celcius") ? "&#8451" : "&#8457");
 
 
         $currentInfo.append("<p><strong>Currently:</strong></p>");
         $currentInfo.append(`<p>${currDate} @ ${currTime}</p>`);
+
         let $currContainer = $("<div class='row'></div>");
         let $currContainerLeft = $("<div class='col s6 center-align'></div>");
         let $currContainerRight = $("<div class='col s6 center-align'></div>");
@@ -233,12 +240,6 @@ $(document).ready(function() {
         $summaryInfo.append("<p><strong>8-hr Summary:</strong></p>");
         $summaryInfo.append(`<p>High: ${highTemp}${symbol} @ ${tempData.highTemp.timestamp}, Low: ${lowTemp}${symbol} @ ${tempData.lowTemp.timestamp}`);
         $summaryInfo.append(`<div class='col s12 center-align'><br><img class='icon' src='${summIcon}' alt=${tempData.dayIcon}></div>`);
-
-
-
-
-
-
 
 
         $("#resultpage").toggle();
@@ -337,12 +338,10 @@ $(document).ready(function() {
         outfit.outer = OUTER[currentConditions];
 
         outfit.accessories = [];
-        outfit.accessories.push(((tempData.currentIcon === "rain" || tempData.dayIcon === "rain") ? ACCESSORIES.rain : "none" ));
+        outfit.accessories.push(((tempData.currentIcon === "rain" || tempData.dayIcon === "rain") ? ACCESSORIES.rain : "None" ));
 
 
         outfit.closedToeShoes = ((currentConditions === "cold" || currentConditions === "cool" || tempData.currentIcon === "rain" || tempData.dayIcon === "rain") ? true : false);
-
-
 
 
         return outfit;
@@ -362,9 +361,10 @@ $(document).ready(function() {
 
         forecastObj.temp = Math.round(maxTemp);
         let date = new Date(maxTempTime * 1000);
-        let hour = date.getHours();
+        let ampm = (date.getHours() >= 12) ? "PM" : "AM";
+        let hour = (date.getHours() > 12 ) ? date.getHours() % 12 : date.getHours();
         let minutes = formatMinutes(date.getMinutes());
-        forecastObj.timestamp = `${hour}:${minutes}`
+        forecastObj.timestamp = `${hour}:${minutes} ${ampm}`;
         return forecastObj;
     }
 
@@ -381,9 +381,10 @@ $(document).ready(function() {
 
         forecastObj.temp = Math.round(minTemp);
         let date = new Date(minTempTime * 1000);
-        let hour = date.getHours();
+        let ampm = (date.getHours() >= 12) ? "PM" : "AM";
+        let hour = (date.getHours() > 12 ) ? date.getHours() % 12 : date.getHours();
         let minutes = formatMinutes(date.getMinutes());
-        forecastObj.timestamp = `${hour}:${minutes}`
+        forecastObj.timestamp = `${hour}:${minutes} ${ampm}`;
         return forecastObj;
     }
 
@@ -394,6 +395,8 @@ $(document).ready(function() {
     function calcTemp(unit, temp) {
         return (unit === "Celcius") ? Math.round((temp - 32) * (5 / 9)) : temp;
     }
+
+
 
 
 });
