@@ -18,6 +18,19 @@ $(document).ready(function() {
         "wind": "./images/darkskyicons/wind.png"
     }
 
+    const BACKGROUNDS = {
+        "clear-day": "./images/backgrounds/clear-day.jpeg",
+        "clear-night": "./images/backgrounds/clear-night.jpeg",
+        "cloudy": "./images/backgrounds/cloudy.jpeg",
+        "fog": "./images/backgrounds/fog.jpg",
+        "partly-cloudy-day": "./images/backgrounds/partly-cloudy-day.jpg",
+        "partly-cloudy-night": "./images/backgrounds/partly-cloudy-night.jpeg",
+        "rain": "./images/backgrounds/rain.jpeg",
+        "snow": "./images/backgrounds/snow.jpeg",
+        "sleet": "./images/backgrounds/snow.jpeg",
+        "wind": "./images/backgrounds/wind.jpg"
+    };
+
     const TOPS = {
         "cold": ["Sweater"],
         "cool": ["Long sleeves"],
@@ -82,7 +95,6 @@ $(document).ready(function() {
     //Listener for form submission
     $("form").submit(function(event) {
         event.preventDefault();
-        console.log("SUBMITTED!");
         let formData = processForm();
         ajaxCalls(formData);
     });
@@ -91,6 +103,11 @@ $(document).ready(function() {
     function displayResults(formData, tempData, outfit) {
 
         $("#page1").toggle();
+
+        let $body = $("body");
+
+        $body.css("background-image", `url('${BACKGROUNDS[tempData.currentIcon]}')`);
+        $body.css("background-size", "cover");
 
         let $innerCol = $("<div class='col s12 white center-align'></div>");
         let $header = $(`<h4 class="center-align">${formData.nickname} you should wear:</h4>`);
@@ -204,7 +221,7 @@ $(document).ready(function() {
         $currContainer.append($currContainerRight);
         $currentInfo.append($currContainer);
 
-        $currContainerLeft.append(`<h3>${currTemp} ${symbol}</h3>`);
+        $currContainerLeft.append(`<h2>${currTemp}${symbol}</h2>`);
         $currContainerRight.append(`<img class='icon' src='${currIcon}' alt=${tempData.currentIcon}>`);
 
 
@@ -214,7 +231,7 @@ $(document).ready(function() {
         let lowTemp = calcTemp(formData.units, tempData.lowTemp.temp);
 
         $summaryInfo.append("<p><strong>8-hr Summary:</strong></p>");
-        $summaryInfo.append(`<p>High: ${highTemp} ${symbol} @ ${tempData.highTemp.timestamp}, Low: ${lowTemp} ${symbol} @ ${tempData.lowTemp.timestamp}`);
+        $summaryInfo.append(`<p>High: ${highTemp}${symbol} @ ${tempData.highTemp.timestamp}, Low: ${lowTemp}${symbol} @ ${tempData.lowTemp.timestamp}`);
         $summaryInfo.append(`<div class='col s12 center-align'><br><img class='icon' src='${summIcon}' alt=${tempData.dayIcon}></div>`);
 
 
@@ -274,9 +291,8 @@ $(document).ready(function() {
             let $xhr_darksky = $.getJSON(`http://galvanize-cors-proxy.herokuapp.com/https://api.darksky.net/forecast/4425e1c1ccfdf34f99ecc35f208760b3/${latitude},${longitude}`);
 
             $xhr_darksky.done(function(darkskyData) {
-                console.log(darkskyData);
                 tempData = {
-                    currentTemp: Math.round(darkskyData.currently.apparentTemperature),
+                    currentTemp: Math.round(darkskyData.currently.temperature),
                     currentIcon: darkskyData.currently.icon,
                     dayIcon: darkskyData.daily.icon,
                     highTemp: getHighTemp(darkskyData.hourly.data),
@@ -329,9 +345,6 @@ $(document).ready(function() {
 
 
 
-        //console.log(tempData.currentIcon);
-        //console.log(tempData.dayIcon);
-        //console.log(outfit);
         return outfit;
 
     }
@@ -341,8 +354,8 @@ $(document).ready(function() {
         let maxTemp = Number.MIN_SAFE_INTEGER;
         let maxTempTime;
         for (let i = 0; i < 8; i++) {
-            if (array[i].apparentTemperature > maxTemp) {
-                maxTemp = array[i].apparentTemperature;
+            if (array[i].temperature > maxTemp) {
+                maxTemp = array[i].temperature;
                 maxTempTime = array[i].time;
             }
         }
@@ -352,7 +365,6 @@ $(document).ready(function() {
         let hour = date.getHours();
         let minutes = formatMinutes(date.getMinutes());
         forecastObj.timestamp = `${hour}:${minutes}`
-        console.log(forecastObj);
         return forecastObj;
     }
 
@@ -361,8 +373,8 @@ $(document).ready(function() {
         let minTemp = Number.MAX_SAFE_INTEGER;
         let minTempTime;
         for (let i = 0; i < 8; i++) {
-            if (array[i].apparentTemperature < minTemp) {
-                minTemp = array[i].apparentTemperature;
+            if (array[i].temperature < minTemp) {
+                minTemp = array[i].temperature;
                 minTempTime = array[i].time;
             }
         }

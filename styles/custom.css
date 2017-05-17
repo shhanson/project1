@@ -10,12 +10,12 @@ input.inputTemp {
     width: 5%;
 }
 
-#resultpage {
-    display: none;
-}
-
 .icon {
     width: 96px;
+}
+
+#resultpage {
+    display: none;
 }
 
 #currDisplay{
