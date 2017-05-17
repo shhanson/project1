@@ -18,6 +18,33 @@ $(document).ready(function() {
         "wind": "./images/darkskyicons/wind.png"
     }
 
+    const TOPS = {
+        "cold": ["Sweater"],
+        "cool": ["Long sleeves"],
+        "warm": ["Short sleeves"],
+        "hot": ["Tank top", "Short sleeves"]
+    };
+
+    const BOTTOMS = {
+        "cold": ["Pants"],
+        "cool": ["Pants", "Leggings"],
+        "warm": ["Pants", "Shorts", "Skirt"],
+        "hot": ["Shorts", "Skirt"]
+    };
+
+    const OUTER = {
+        "cold": ["Heavy coat"],
+        "cool": ["Light coat"],
+        "warm": ["None"],
+        "hot": ["None"]
+    };
+
+    const SHOES = ["Closed-toed shoes", "Open-toed shoes"];
+    const ACCESSORIES = {
+        "rainy": ["Umbrella"],
+        "sunny": ["Sunglasses"]
+    };
+
     //Listener for "validation" of #nickname field
     $("#nickname").change(function() {
         if (!NICKNAME_REGEX.test($("#nickname").val())) {
@@ -60,29 +87,19 @@ $(document).ready(function() {
         ajaxCalls(formData);
     });
 
+
     function displayResults(formData, tempData, outfit) {
 
         $("#page1").toggle();
 
-        let symbol = ((formData.units === "Celcius") ? "&#8451" : "&#8457");
-
-        let date = new Date();
-        let currDate = `${DAYS[date.getDay()]} ${MONTHS[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
-        let currMinutes = formatMinutes(date.getMinutes());
-        let currTime = `${date.getHours()}:${currMinutes}`
-        let currIcon = ICONS[tempData.currentIcon];
-        let currTemp = calcTemp(formData.units, tempData.currentTemp);
-
-        let summIcon = ICONS[tempData.dayIcon];
-        let highTemp = calcTemp(formData.units, tempData.highTemp.temp);
-        let lowTemp = calcTemp(formData.units, tempData.lowTemp.temp);
 
 
-        let $mainCol = $("#resultpage div:first-child");
-        let $innerCol = $("<div class='col s12 white'></div>");
-        let $header = $(`<h4 class="center-align">${formData.nickname} you should wear...</h4>`);
+
+        let $innerCol = $("<div class='col s12 white center-align'></div>");
+        let $header = $(`<h4 class="center-align">${formData.nickname} you should wear:</h4>`);
+        //$("h2").text(`${formData.nickname} you should wear...`)
         $innerCol.append($header);
-        $mainCol.append($innerCol);
+        $("#resultpage").append($innerCol);
 
         //REPLACE WITH LOOP
         let $outfitTop = $("<h3>Long-sleeves</h3>");
@@ -104,14 +121,25 @@ $(document).ready(function() {
         $innerRow.append($currentInfo);
         $innerRow.append($summaryInfo);
 
-        let $buttonCol = $("<div class='col s12 center-align'></div>'");
-        let $backButton = $("<button id='back' type='button' class='waves-effect waves-light btn'>Back</button>");
-
-        $innerCol.append($buttonCol);
-        $buttonCol.append($backButton);
-
+        // let $buttonCol = $("<div class='col s12 center-align'></div>'");
+        // let $backButton = $("<button id='back' type='button' class='waves-effect waves-light btn'>Back</button>");
+        // $innerCol.append($buttonCol);
+        // $buttonCol.append($backButton);
 
 
+
+        let symbol = ((formData.units === "Celcius") ? "&#8451" : "&#8457");
+
+        let date = new Date();
+        let currDate = `${DAYS[date.getDay()]} ${MONTHS[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+        let currMinutes = formatMinutes(date.getMinutes());
+        let currTime = `${date.getHours()}:${currMinutes}`
+        let currIcon = ICONS[tempData.currentIcon];
+        let currTemp = calcTemp(formData.units, tempData.currentTemp);
+
+        let summIcon = ICONS[tempData.dayIcon];
+        let highTemp = calcTemp(formData.units, tempData.highTemp.temp);
+        let lowTemp = calcTemp(formData.units, tempData.lowTemp.temp);
 
 
 
@@ -187,6 +215,31 @@ $(document).ready(function() {
 
     function generateOutfit(formData, tempData) {
         let outfit = {};
+
+        let currentConditions = "";
+        let currentTemp = tempData.currentTemp;
+        let midMild = Math.round((formData.mildMax + formData.mildMin) / 2);
+
+
+        switch(tempData.currentTemp){
+            case currentTemp <= formData.coldMax:
+                currentConditions = "cold";
+                break;
+            case currentTemp >= formData.mildMin && currentTemp <= midMild:
+                currentConditions = "cool";
+                break;
+            case currentTemp > midMild && currentTemp <= formData.mildMax:
+                currentConditions = "warm";
+                break;
+            case currentTemp >= formData.hotMax:
+                currentConditions = "hot";
+                break;
+            default:
+                console.log("ERROR!");
+
+        }
+
+
 
         return outfit;
 
