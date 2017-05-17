@@ -60,11 +60,12 @@ $(document).ready(function() {
         ajaxCalls(formData);
     });
 
-    function displayResults(formData, tempData) {
+    function displayResults(formData, tempData, outfit) {
 
         $("#page1").toggle();
 
         let symbol = ((formData.units === "Celcius") ? "&#8451" : "&#8457");
+
         let date = new Date();
         let currDate = `${DAYS[date.getDay()]} ${MONTHS[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
         let currMinutes = formatMinutes(date.getMinutes());
@@ -77,17 +78,42 @@ $(document).ready(function() {
         let lowTemp = calcTemp(formData.units, tempData.lowTemp.temp);
 
 
-
-
         let $mainCol = $("#resultpage div:first-child");
         let $innerCol = $("<div class='col s12 white'></div>");
-        let $outfitContainer = $("<img src='http://placehold.it/450x450'>");
-        let $infoDiv = $(`<div class='col s12 white'><div class='row'> <div class='col s6'><p><strong>Currently:</strong><br> ${currDate} @ ${currTime}</p><h2 style='display: inline'>${currTemp} ${symbol}</h2><img class='icon' src='${currIcon}'></div> <div class='col s6'><p><strong>8-hr Summary:</strong><br>High: ${highTemp}${symbol} @ ${tempData.highTemp.timestamp}, Low: ${lowTemp}${symbol} @ ${tempData.lowTemp.timestamp}</p><img class='icon' src='${summIcon}'></div>   </div></div>`);
-
-        $mainCol.append(`<h4 class="center-align">${formData.nickname} you should wear...</h4>`);
+        let $header = $(`<h4 class="center-align">${formData.nickname} you should wear...</h4>`);
+        $innerCol.append($header);
         $mainCol.append($innerCol);
-        $innerCol.append($outfitContainer);
-        $innerCol.append($infoDiv);
+
+        //REPLACE WITH LOOP
+        let $outfitTop = $("<h3>Long-sleeves</h3>");
+        let $outfitBottom = $("<h3>Pants</h3>");
+        let $outfitOuter = $("<h3>Light jacket</h3>");
+        let $outfitShoes = $("<h3>Close-toed shoes</h3>");
+        let $outfitAccessory = $("<h3>Umbrella</h3>");
+        $innerCol.append($outfitTop);
+        $innerCol.append($outfitBottom);
+        $innerCol.append($outfitOuter);
+        $innerCol.append($outfitShoes);
+        $innerCol.append($outfitAccessory);
+
+        let $innerRow = $("<div class='row'></div>");
+        let $currentInfo = $("<div class='col s6'>CURRENT</div>")
+        let $summaryInfo = $("<div class='col s6'>SUMMARY</div>")
+
+        $innerCol.append($innerRow);
+        $innerRow.append($currentInfo);
+        $innerRow.append($summaryInfo);
+
+        let $buttonCol = $("<div class='col s12 center-align'></div>'");
+        let $backButton = $("<button id='back' type='button' class='waves-effect waves-light btn'>Back</button>");
+
+        $innerCol.append($buttonCol);
+        $buttonCol.append($backButton);
+
+
+
+
+
 
 
 
@@ -149,8 +175,8 @@ $(document).ready(function() {
                     highTemp: getHighTemp(darkskyData.hourly.data),
                     lowTemp: getLowTemp(darkskyData.hourly.data)
                 };
-                generateOutfit(formData, tempData);
-                displayResults(formData, tempData);
+                let outfit = generateOutfit(formData, tempData);
+                displayResults(formData, tempData, outfit);
 
             }); //END $xhr_darksky.done
 
@@ -160,6 +186,9 @@ $(document).ready(function() {
     } //END ajaxCalls
 
     function generateOutfit(formData, tempData) {
+        let outfit = {};
+
+        return outfit;
 
     }
 
@@ -205,7 +234,7 @@ $(document).ready(function() {
         return (minutes < 10) ? "0" + minutes : minutes;
     }
 
-    function calcTemp(unit, temp){
+    function calcTemp(unit, temp) {
         return (unit === "Celcius") ? Math.round((temp - 32) * (5 / 9)) : temp;
     }
 
