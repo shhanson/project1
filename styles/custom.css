@@ -2,7 +2,7 @@ div {
     padding: 8px;
 }
 
-input.inputText{
+input.inputText {
     width: 30%;
 }
 
@@ -10,7 +10,7 @@ input.inputTemp {
     width: 5%;
 }
 
-#resultpage{
+#resultpage {
     display: none;
 }
 
