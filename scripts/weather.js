@@ -60,17 +60,17 @@ $(document).ready(function() {
 
     //Listener for #coldmax field. Populates other field ranges based on input.
     $("#coldmax").change(function() {
-        $("#mildmin").val(parseInt($("#coldmax").val()) + 1);
-        $("#mildmax").val(parseInt($("#mildmin").val()) + 1);
-        $("#hotmax").val(parseInt($("#mildmax").val()) + 1);
+        $("#mildmin").val(Number($("#coldmax").val()) + 1);
+        $("#mildmax").val(Number($("#mildmin").val()) + 1);
+        $("#hotmax").val(Number($("#mildmax").val()) + 1);
     });
 
     //Listener for #mildmax field. Populates other field ranges based on input.
     $("#mildmax").change(function() {
-        if (parseInt($("#mildmax").val()) <= parseInt($("#mildmin").val())) {
+        if (Number($("#mildmax").val()) <= Number($("#mildmin").val())) {
             Materialize.toast(`Please enter a value greater than ${$("#mildmin").val()}`, 4000);
         } else {
-            $("#hotmax").val(parseInt($("#mildmax").val()) + 1);
+            $("#hotmax").val(Number($("#mildmax").val()) + 1);
         }
     });
 
@@ -82,6 +82,7 @@ $(document).ready(function() {
     //Listener for form submission
     $("form").submit(function(event) {
         event.preventDefault();
+        console.log("SUBMITTED!");
         let formData = processForm();
         ajaxCalls(formData);
     });
@@ -203,7 +204,7 @@ $(document).ready(function() {
         $currContainer.append($currContainerRight);
         $currentInfo.append($currContainer);
 
-        $currContainerLeft.append(`<h2>${currTemp}${symbol}</h2>`);
+        $currContainerLeft.append(`<h3>${currTemp} ${symbol}</h3>`);
         $currContainerRight.append(`<img class='icon' src='${currIcon}' alt=${tempData.currentIcon}>`);
 
 
@@ -213,7 +214,7 @@ $(document).ready(function() {
         let lowTemp = calcTemp(formData.units, tempData.lowTemp.temp);
 
         $summaryInfo.append("<p><strong>8-hr Summary:</strong></p>");
-        $summaryInfo.append(`<p>High: ${highTemp}${symbol} @ ${tempData.highTemp.timestamp}, Low: ${lowTemp}${symbol} @ ${tempData.lowTemp.timestamp}`);
+        $summaryInfo.append(`<p>High: ${highTemp} ${symbol} @ ${tempData.highTemp.timestamp}, Low: ${lowTemp} ${symbol} @ ${tempData.lowTemp.timestamp}`);
         $summaryInfo.append(`<div class='col s12 center-align'><br><img class='icon' src='${summIcon}' alt=${tempData.dayIcon}></div>`);
 
 
@@ -234,10 +235,10 @@ $(document).ready(function() {
             nickname: $("#nickname").val(),
             zipcode: $("#zipcode").val(),
             units: $("input[name=units]:checked").val(),
-            coldMax: parseInt($("#coldmax").val()),
-            mildMin: parseInt($("#mildmin").val()),
-            mildMax: parseInt($("#mildmax").val()),
-            hotMax: parseInt($("#hotmax").val())
+            coldMax: Number($("#coldmax").val()),
+            mildMin: Number($("#mildmin").val()),
+            mildMax: Number($("#mildmax").val()),
+            hotMax: Number($("#hotmax").val())
         };
 
         //Validating the fields before submission again JUST IN CASE
@@ -273,6 +274,7 @@ $(document).ready(function() {
             let $xhr_darksky = $.getJSON(`http://galvanize-cors-proxy.herokuapp.com/https://api.darksky.net/forecast/4425e1c1ccfdf34f99ecc35f208760b3/${latitude},${longitude}`);
 
             $xhr_darksky.done(function(darkskyData) {
+                console.log(darkskyData);
                 tempData = {
                     currentTemp: Math.round(darkskyData.currently.apparentTemperature),
                     currentIcon: darkskyData.currently.icon,
@@ -297,7 +299,6 @@ $(document).ready(function() {
         let currentTemp = tempData.currentTemp;
         let midMild = Math.round((formData.mildMax + formData.mildMin) / 2);
 
-        console.log(`CURRENT TEMP: ${currentTemp}`);
 
 
         if(currentTemp <= formData.coldMax){
@@ -351,6 +352,7 @@ $(document).ready(function() {
         let hour = date.getHours();
         let minutes = formatMinutes(date.getMinutes());
         forecastObj.timestamp = `${hour}:${minutes}`
+        console.log(forecastObj);
         return forecastObj;
     }
 
