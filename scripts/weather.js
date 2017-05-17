@@ -217,7 +217,7 @@ $(document).ready(function() {
         let symbol = ((formData.units === "Celcius") ? "&#8451" : "&#8457");
 
 
-        $currentInfo.append("<p><strong>Currently:</strong></p>");
+        $currentInfo.append(`<p><strong>Currently in ${tempData.city}:</strong></p>`);
         $currentInfo.append(`<p>${currDate} @ ${currTime}</p>`);
 
         let $currContainer = $("<div class='row'></div>");
@@ -272,6 +272,7 @@ $(document).ready(function() {
 
         let longitude;
         let latitude;
+        let city;
         let tempData;
 
         //Error checking for each AJAX call
@@ -288,6 +289,7 @@ $(document).ready(function() {
         $xhr_google.done(function(googleData) {
             latitude = googleData.results[0].geometry.location.lat;
             longitude = googleData.results[0].geometry.location.lng;
+            city = googleData.results[0].address_components[1].short_name;
 
             let $xhr_darksky = $.getJSON(`http://galvanize-cors-proxy.herokuapp.com/https://api.darksky.net/forecast/4425e1c1ccfdf34f99ecc35f208760b3/${latitude},${longitude}`);
 
@@ -297,7 +299,8 @@ $(document).ready(function() {
                     currentIcon: darkskyData.currently.icon,
                     dayIcon: darkskyData.daily.icon,
                     highTemp: getHighTemp(darkskyData.hourly.data),
-                    lowTemp: getLowTemp(darkskyData.hourly.data)
+                    lowTemp: getLowTemp(darkskyData.hourly.data),
+                    city: city
                 };
                 let outfit = generateOutfit(formData, tempData);
                 displayResults(formData, tempData, outfit);
