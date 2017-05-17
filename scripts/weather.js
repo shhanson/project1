@@ -91,18 +91,12 @@ $(document).ready(function() {
 
         $("#page1").toggle();
 
-
-
-
         let $innerCol = $("<div class='col s12 white center-align'></div>");
         let $header = $(`<h4 class="center-align">${formData.nickname} you should wear:</h4>`);
-        //$("h2").text(`${formData.nickname} you should wear...`)
         $innerCol.append($header);
         $("#resultpage").append($innerCol);
 
-        console.log(outfit);
-
-
+        //BEGIN OUTFIT DISPLAY
         let $topList = $("<h3></h3>");
         let str = "";
         for(let i = 0; i < outfit.top.length; i++){
@@ -167,11 +161,12 @@ $(document).ready(function() {
             $accessoryList.text(str);
             $innerCol.append($accessoryList);
         }
+        //END OUTFIT DISPLAY
 
 
         let $innerRow = $("<div class='row'></div>");
-        let $currentInfo = $("<div class='col s6'>CURRENT</div>")
-        let $summaryInfo = $("<div class='col s6'>SUMMARY</div>")
+        let $currentInfo = $("<div class='col s6 left-align'></div>")
+        let $summaryInfo = $("<div class='col s6 left-align'></div>")
 
         $innerCol.append($innerRow);
         $innerRow.append($currentInfo);
@@ -190,7 +185,6 @@ $(document).ready(function() {
 
 
         let symbol = ((formData.units === "Celcius") ? "&#8451" : "&#8457");
-
         let date = new Date();
         let currDate = `${DAYS[date.getDay()]} ${MONTHS[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
         let currMinutes = formatMinutes(date.getMinutes());
@@ -198,9 +192,31 @@ $(document).ready(function() {
         let currIcon = ICONS[tempData.currentIcon];
         let currTemp = calcTemp(formData.units, tempData.currentTemp);
 
+
+        $currentInfo.append("<p><strong>Currently:</strong></p>");
+        $currentInfo.append(`<p>${currDate} @ ${currTime}</p>`);
+        let $currContainer = $("<div class='row'></div>");
+        let $currContainerLeft = $("<div class='col s6 center-align'></div>");
+        let $currContainerRight = $("<div class='col s6 center-align'></div>");
+
+        $currContainer.append($currContainerLeft);
+        $currContainer.append($currContainerRight);
+        $currentInfo.append($currContainer);
+
+        $currContainerLeft.append(`<h2>${currTemp}${symbol}</h2>`);
+        $currContainerRight.append(`<img class='icon' src='${currIcon}' alt=${tempData.currentIcon}>`);
+
+
+
         let summIcon = ICONS[tempData.dayIcon];
         let highTemp = calcTemp(formData.units, tempData.highTemp.temp);
         let lowTemp = calcTemp(formData.units, tempData.lowTemp.temp);
+
+        $summaryInfo.append("<p><strong>8-hr Summary:</strong></p>");
+        $summaryInfo.append(`<p>High: ${highTemp}${symbol} @ ${tempData.highTemp.timestamp}, Low: ${lowTemp}${symbol} @ ${tempData.lowTemp.timestamp}`);
+        $summaryInfo.append(`<div class='col s12 center-align'><br><img class='icon' src='${summIcon}' alt=${tempData.dayIcon}></div>`);
+
+
 
 
 

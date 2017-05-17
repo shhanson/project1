@@ -17,3 +17,7 @@ input.inputTemp {
 .icon {
     width: 96px;
 }
+
+#currDisplay{
+    display: inline-block;
+}
