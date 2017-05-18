@@ -212,7 +212,7 @@ $(document).ready(() => {
     const symbol = ((formData.units === 'Celcius') ? '&#8451' : '&#8457');
 
     $currentInfo.append(`<p><strong>Currently in ${tempData.city}:</strong></p>`);
-    $currentInfo.append(`<p>${currDate} @ ${currTime}</p>`);
+    $currentInfo.append(`<p class="truncate">${currDate} @ ${currTime}</p>`);
     $currentInfo.append(`<h2 class="center-align">${currTemp}${symbol} <i class="${ICONS[tempData.currentIcon]}"></i></h2>`);
 
     const highTemp = calcTemp(formData.units, tempData.highTemp.temp);
