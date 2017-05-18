@@ -228,7 +228,7 @@ $(document).ready(function() {
 
         $summaryInfo.append("<p><strong>8-hr Summary:</strong></p>");
         $summaryInfo.append(`<p>High: ${highTemp}${symbol} @ ${tempData.highTemp.timestamp}, Low: ${lowTemp}${symbol} @ ${tempData.lowTemp.timestamp}`);
-        $summaryInfo.append(`<h1 class='center-align'><i class='${ICONS[tempData.dayIcon]}'></i></h1>`);
+        $summaryInfo.append(`<h2 class='center-align'><i class='${ICONS[tempData.dayIcon]}'></i></h2>`);
 
 
 
