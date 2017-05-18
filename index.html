@@ -11,15 +11,23 @@
     <!--Reset CSS-->
     <link rel="stylesheet" href="styles/reset.css">
 
+    <!-- Weather icons CSS -->
+    <link rel="stylesheet" href="./styles/weather-icons.min.css">
+
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+
 
     <!--Custom CSS-->
     <link rel="stylesheet" href="./styles/custom.css">
 
+
+
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
 
+
+    <script src="scripts/weather.js"></script>
 
     <style>
         div {
@@ -47,8 +55,15 @@
                     <label for="nickname">Nickname</label>
                     <input type="text" class="inputText" id="nickname" name="nickname" autofocus required><br>
 
+
                     <label for="zipcode">ZIP code</label>
                     <input type="text" class="inputText" id="zipcode" name="zipcode" required><br>
+
+                    <!-- <input type="radio" name="gender" value="M" id="male" required>
+                    <label for="male">Male</label>
+
+                    <input type="radio" name="gender" value="F" id="female" required>
+                    <label for="female">Female</label><br> -->
 
 
                     <input type="radio" name="units" value="Fahrenheit" id="fahrenheit" checked="checked" required>
@@ -77,6 +92,8 @@
 
         <!-- Result container -->
         <div class="container" id="resultpage">
+
+
         </div>
         <!-- End result container -->
     </div>
@@ -86,7 +103,8 @@
         <p><a href="https://darksky.net/poweredby/" alt="darksky.net">Powered by Dark Sky</a></p>
     </footer>
 
-    <script src="scripts/weather.js"></script>
+
+
 </body>
 
 </html>

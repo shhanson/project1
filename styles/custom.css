@@ -10,8 +10,33 @@ input.inputTemp {
     width: 5%;
 }
 
-.icon {
-    width: 96px;
+.wi-day-cloudy, .wi-cloudy{
+    color: DarkGray;
+}
+
+.wi-night-alt-partly-cloudy{
+    color: SlateGray;
+}
+
+.wi-rain {
+    color: SteelBlue;
+}
+
+.wi-night-clear{
+    color: MidnightBlue;
+}
+
+.wi-fog, .wi-strong-wind{
+    color: Gray;
+}
+
+.wi-snow, .wi-sleet{
+    color: lightskyblue;
+
+}
+
+.wi-day-sunny{
+    color: yellow;
 }
 
 #resultpage {

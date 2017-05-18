@@ -6,16 +6,16 @@ $(document).ready(function() {
     const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const ICONS = {
-        "clear-day": "./images/darkskyicons/clear-day.png",
-        "clear-night": "./images/darkskyicons/clear-night.png",
-        "cloudy": "./images/darkskyicons/cloudy.png",
-        "fog": "./images/darkskyicons/fog.png",
-        "partly-cloudy-day": "./images/darkskyicons/partly-cloudy-day.png",
-        "partly-cloudy-night": "./images/darkskyicons/partly-cloudy-night.png",
-        "rain": "./images/darkskyicons/rain.png",
-        "sleet": "./images/darkskyicons/sleet.png",
-        "snow": "./images/darkskyicons/snow.png",
-        "wind": "./images/darkskyicons/wind.png"
+        "clear-day": "yellow-text wi wi-day-sunny",
+        "clear-night": "indigo-text text-darken-4 wi wi-night-clear",
+        "cloudy": "text-grey text-darken-1 wi wi-cloudy",
+        "fog": "text-grey text-darken-2 wi wi-fog",
+        "partly-cloudy-day": "text-grey text-darken-1 wi wi-day-cloudy",
+        "partly-cloudy-night": "text-grey text-darken-1 wi wi-night-alt-partly-cloudy",
+        "rain": "text-blue text-darken-2 wi wi-rain",
+        "sleet": "text-grey text-lighten-1 wi wi-sleet",
+        "snow": "text-grey text-lighten-1 wi wi-snow",
+        "wind": "text-grey wi-strong-wind"
     }
 
     const BACKGROUNDS = {
@@ -42,6 +42,8 @@ $(document).ready(function() {
         "cold": ["Pants"],
         "cool": ["Pants", "Leggings"],
         "warm": ["Leggings", "Shorts", "Skirt"],
+        //"cool": ["Pants", {"F": ["Leggings"]}],
+        //"warm": ["Shorts", {"F": ["Leggings", "Skirt"]}],
         "hot": ["Shorts", "Skirt"]
     };
 
@@ -77,7 +79,7 @@ $(document).ready(function() {
         $("#hotmax").val(Number($("#coldmax").val()) + 1);
     });
 
-    $("#hotmax").change(function(){
+    $("#hotmax").change(function() {
         if (Number($("#hotmax").val()) <= Number($("#coldmax").val())) {
             Materialize.toast(`Please enter a value greater than ${$("#coldmax").val()}`, 4000);
         }
@@ -106,6 +108,8 @@ $(document).ready(function() {
         $body.css("background-size", "cover");
 
         let $innerCol = $("<div class='col s12 white center-align'></div>");
+
+
         let $header = $(`<h4 class="center-align">${formData.nickname} you should wear:</h4>`);
         $innerCol.append($header);
         $("#resultpage").append($innerCol);
@@ -113,8 +117,8 @@ $(document).ready(function() {
         //BEGIN OUTFIT DISPLAY
         let $topList = $("<h3></h3>");
         let str = "";
-        for(let i = 0; i < outfit.top.length; i++){
-            if(i !== outfit.top.length - 1){
+        for (let i = 0; i < outfit.top.length; i++) {
+            if (i !== outfit.top.length - 1) {
                 str += outfit.top[i] + " or ";
             } else {
                 str += outfit.top[i];
@@ -127,8 +131,8 @@ $(document).ready(function() {
         let $bottomList = $("<h3></h3>");
         str = "";
 
-        for(let i = 0; i < outfit.bottom.length; i++){
-            if(i !== outfit.bottom.length - 1){
+        for (let i = 0; i < outfit.bottom.length; i++) {
+            if (i !== outfit.bottom.length - 1) {
                 str += outfit.bottom[i] + " or ";
             } else {
                 str += outfit.bottom[i];
@@ -138,11 +142,11 @@ $(document).ready(function() {
         $bottomList.text(str);
         $innerCol.append($bottomList);
 
-        if(outfit.outer[0] !== "None"){
+        if (outfit.outer[0] !== "None") {
             let $outerList = $("<h3></h3>");
             str = "";
-            for(let i = 0; i < outfit.outer.length; i++){
-                if(i !== outfit.outer.length - 1){
+            for (let i = 0; i < outfit.outer.length; i++) {
+                if (i !== outfit.outer.length - 1) {
                     str += outfit.outer[i] + " or ";
                 } else {
                     str += outfit.outer[i];
@@ -155,18 +159,18 @@ $(document).ready(function() {
 
         let $shoes = $("<h3></h3>");
 
-        if(outfit.closedToeShoes){
+        if (outfit.closedToeShoes) {
             $shoes.text("Closed-toe shoes");
         } else {
             $shoes.text("Open-toe shoes");
         }
         $innerCol.append($shoes);
 
-        if(outfit.accessories[0] !== "None"){
+        if (outfit.accessories[0] !== "None") {
             let $accessoryList = $("<h3></h3>");
             str = "";
-            for(let i = 0; i < outfit.accessories.length; i++){
-                if(i !== outfit.accessories.length - 1){
+            for (let i = 0; i < outfit.accessories.length; i++) {
+                if (i !== outfit.accessories.length - 1) {
                     str += outfit.accessories[i] + " or ";
                 } else {
                     str += outfit.accessories[i];
@@ -186,15 +190,15 @@ $(document).ready(function() {
         $innerRow.append($currentInfo);
         $innerRow.append($summaryInfo);
 
-         let $buttonCol = $("<div class='col s12 center-align'></div>'");
-         let $backButton = $("<button id='back' type='button' class='waves-effect waves-light btn'>Back</button>");
+        let $buttonCol = $("<div class='col s12 center-align'></div>'");
+        let $backButton = $("<button id='back' type='button' class='waves-effect waves-light btn'>Back</button>");
 
-         $backButton.click(function(){
-             location.reload();
-         });
+        $backButton.click(function() {
+            location.reload();
+        });
 
-         $innerCol.append($buttonCol);
-         $buttonCol.append($backButton);
+        $innerCol.append($buttonCol);
+        $buttonCol.append($backButton);
 
 
 
@@ -203,10 +207,10 @@ $(document).ready(function() {
         let currDate = `${DAYS[date.getDay()]} ${MONTHS[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
         let currMinutes = formatMinutes(date.getMinutes());
         let ampm = (date.getHours() >= 12) ? "PM" : "AM";
-        let currHour = (date.getHours() > 12 ) ? date.getHours() % 12 : date.getHours();
-        let currTime = `${currHour}:${currMinutes} ${ampm}`;
+        let currHour = (date.getHours() > 12) ? date.getHours() % 12 : date.getHours();
+        let currTime = `${currHour}:${currMinutes}${ampm}`;
 
-        let currIcon = ICONS[tempData.currentIcon];
+
         let currTemp = calcTemp(formData.units, tempData.currentTemp);
         let symbol = ((formData.units === "Celcius") ? "&#8451" : "&#8457");
 
@@ -214,26 +218,19 @@ $(document).ready(function() {
         $currentInfo.append(`<p><strong>Currently in ${tempData.city}:</strong></p>`);
         $currentInfo.append(`<p>${currDate} @ ${currTime}</p>`);
 
-        let $currContainer = $("<div class='row'></div>");
-        let $currContainerLeft = $("<div class='col s6 center-align'></div>");
-        let $currContainerRight = $("<div class='col s6 center-align'></div>");
 
-        $currContainer.append($currContainerLeft);
-        $currContainer.append($currContainerRight);
-        $currentInfo.append($currContainer);
-
-        $currContainerLeft.append(`<h2>${currTemp}${symbol}</h2>`);
-        $currContainerRight.append(`<img class='icon' src='${currIcon}' alt=${tempData.currentIcon}>`);
+        $currentInfo.append(`<h2>${currTemp}${symbol} <i class="${ICONS[tempData.currentIcon]}"></i></h2>`);
+        console.log(ICONS[tempData.currentIcon]);
 
 
-
-        let summIcon = ICONS[tempData.dayIcon];
         let highTemp = calcTemp(formData.units, tempData.highTemp.temp);
         let lowTemp = calcTemp(formData.units, tempData.lowTemp.temp);
 
         $summaryInfo.append("<p><strong>8-hr Summary:</strong></p>");
         $summaryInfo.append(`<p>High: ${highTemp}${symbol} @ ${tempData.highTemp.timestamp}, Low: ${lowTemp}${symbol} @ ${tempData.lowTemp.timestamp}`);
-        $summaryInfo.append(`<div class='col s12 center-align'><br><img class='icon' src='${summIcon}' alt=${tempData.dayIcon}></div>`);
+        $summaryInfo.append(`<h1 class='center-align'><i class='${ICONS[tempData.dayIcon]}'></i></h1>`);
+
+
 
 
         $("#resultpage").toggle();
@@ -312,26 +309,11 @@ $(document).ready(function() {
         let midMild = Math.round((formData.coldMax + formData.hotMax) / 2);
 
 
-
-        // if(currentTemp <= formData.coldMax){
-        //     currentConditions = "cold";
-        // } else if(currentTemp >= formData.mildMin && currentTemp <= midMild){
-        //     currentConditions = "cool";
-        // } else if(currentTemp > midMild && currentTemp <= formData.mildMax){
-        //     currentConditions = "warm";
-        // } else if(currentTemp >= formData.hotMax){
-        //     currentConditions = "hot";
-        // } else {
-        //     console.log("ERROR!");
-        //     Materialize.toast("Something went wrong!", 4000);
-        //
-        // }
-
-        if(currentTemp <= formData.coldMax){
+        if (currentTemp <= formData.coldMax) {
             currentConditions = "cold";
-        } else if(currentTemp > formData.coldMax && currentTemp <= midMild){
+        } else if (currentTemp > formData.coldMax && currentTemp <= midMild) {
             currentConditions = "cool";
-        } else if(currentTemp > midMild && currentTemp < formData.hotMax){
+        } else if (currentTemp > midMild && currentTemp < formData.hotMax) {
             currentConditions = "warm";
         } else if (currentTemp >= formData.hotMax) {
             currentConditions = "hot";
@@ -349,7 +331,7 @@ $(document).ready(function() {
         outfit.outer = OUTER[currentConditions];
 
         outfit.accessories = [];
-        outfit.accessories.push(((tempData.currentIcon === "rain" || tempData.dayIcon === "rain") ? ACCESSORIES.rain : "None" ));
+        outfit.accessories.push(((tempData.currentIcon === "rain" || tempData.dayIcon === "rain") ? ACCESSORIES.rain : "None"));
 
 
         outfit.closedToeShoes = ((currentConditions === "cold" || currentConditions === "cool" || tempData.currentIcon === "rain" || tempData.dayIcon === "rain") ? true : false);
@@ -373,9 +355,9 @@ $(document).ready(function() {
         forecastObj.temp = Math.round(maxTemp);
         let date = new Date(maxTempTime * 1000);
         let ampm = (date.getHours() >= 12) ? "PM" : "AM";
-        let hour = (date.getHours() > 12 ) ? date.getHours() % 12 : date.getHours();
+        let hour = (date.getHours() > 12) ? date.getHours() % 12 : date.getHours();
         let minutes = formatMinutes(date.getMinutes());
-        forecastObj.timestamp = `${hour}:${minutes} ${ampm}`;
+        forecastObj.timestamp = `${hour}:${minutes}${ampm}`;
         return forecastObj;
     }
 
@@ -393,9 +375,9 @@ $(document).ready(function() {
         forecastObj.temp = Math.round(minTemp);
         let date = new Date(minTempTime * 1000);
         let ampm = (date.getHours() >= 12) ? "PM" : "AM";
-        let hour = (date.getHours() > 12 ) ? date.getHours() % 12 : date.getHours();
+        let hour = (date.getHours() > 12) ? date.getHours() % 12 : date.getHours();
         let minutes = formatMinutes(date.getMinutes());
-        forecastObj.timestamp = `${hour}:${minutes} ${ampm}`;
+        forecastObj.timestamp = `${hour}:${minutes}${ampm}`;
         return forecastObj;
     }
 
