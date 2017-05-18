@@ -60,25 +60,26 @@ $(document).ready(() => {
     // Listener for "validation" of #nickname field
   $('#nickname').change(() => {
     if (!NICKNAME_REGEX.test($('#nickname').val())) {
-      Materialize.toast('Nickname must be at least 4 characters in length, alphanumeric, "-" and "_" allowed', 3000);
+      Materialize.toast('Nickname must be at least 4 characters in length, alphanumeric, "-" and "_" allowed', 3000, 'amber darken-2');
     }
   });
 
     // Listener for "validation" of #zipcode field
   $('#zipcode').change(() => {
     if (!ZIP_REGEX.test($('#zipcode').val())) {
-      Materialize.toast('Invalid ZIP code format', 3000);
+      Materialize.toast('Invalid ZIP code format', 3000, 'amber darken-2');
     }
   });
 
     // Listener for #coldmax field. Populates other field ranges based on input.
   $('#coldmax').change(() => {
-    $('#hotmax').val(Number($('#coldmax').val()) + 1);
+    // $('#hotmax').val(Number($('#coldmax').val()) + 1);
+    $('#hotmax').attr('placeholder', Number($('#coldmax').val()) + 1);
   });
 
   $('#hotmax').change(() => {
     if (Number($('#hotmax').val()) <= Number($('#coldmax').val())) {
-      Materialize.toast(`Please enter a value greater than ${$('#coldmax').val()}`, 3000);
+      Materialize.toast(`Please enter a value greater than ${$('#coldmax').val()}`, 3000, 'amber darken-2');
     }
   });
 
@@ -178,13 +179,15 @@ $(document).ready(() => {
         // END OUTFIT DISPLAY
 
 
-    const $innerRow = $("<div class='row'></div>");
-    const $currentInfo = $("<div class='col s6 left-align'></div>");
-    const $summaryInfo = $("<div class='col s6 left-align'></div>");
+    const $innerRow = $("<div class='row' id='innerRow'></div>");
+    const $valignWrapper = $("<div class='valign-wrapper'></div>");
+    const $currentInfo = $("<div class='col s6 left-align' id='currentInfo'></div>");
+    const $summaryInfo = $("<div class='col s6 left-align' id='summaryInfo'></div>");
 
     $innerCol.append($innerRow);
     $innerRow.append($currentInfo);
     $innerRow.append($summaryInfo);
+
 
     const $buttonCol = $("<div class='col s12 center-align'></div>'");
     const $backButton = $("<button id='back' type='button' class='waves-effect waves-light btn'>Back</button>");
@@ -208,21 +211,16 @@ $(document).ready(() => {
     const currTemp = calcTemp(formData.units, tempData.currentTemp);
     const symbol = ((formData.units === 'Celcius') ? '&#8451' : '&#8457');
 
-
     $currentInfo.append(`<p><strong>Currently in ${tempData.city}:</strong></p>`);
     $currentInfo.append(`<p>${currDate} @ ${currTime}</p>`);
-
-
     $currentInfo.append(`<h2 class="center-align">${currTemp}${symbol} <i class="${ICONS[tempData.currentIcon]}"></i></h2>`);
-
 
     const highTemp = calcTemp(formData.units, tempData.highTemp.temp);
     const lowTemp = calcTemp(formData.units, tempData.lowTemp.temp);
 
     $summaryInfo.append('<p><strong>8-hr Summary:</strong></p>');
-    $summaryInfo.append(`<p>High: ${highTemp}${symbol} @ ${tempData.highTemp.timestamp}, Low: ${lowTemp}${symbol} @ ${tempData.lowTemp.timestamp}`);
+    $summaryInfo.append(`<p class="truncate">High: ${highTemp}<sup>o</sup> @ ${tempData.highTemp.timestamp}, Low: ${lowTemp}<sup>o</sup> @ ${tempData.lowTemp.timestamp}`);
     $summaryInfo.append(`<h2 class='center-align'><i class='${ICONS[tempData.dayIcon]}'></i></h2>`);
-
 
     $('#resultpage').toggle();
   } // END displayResults
@@ -241,7 +239,7 @@ $(document).ready(() => {
     if (formData.hotMax > formData.coldMax && NICKNAME_REGEX.test(formData.nickname) && ZIP_REGEX.test(formData.zipcode)) {
       return formData;
     }
-    Materialize.toast('Input error!', 3000);
+    Materialize.toast('Input error!', 3000, 'deep-orange darken-4');
   } // END processForm
 
   function ajaxCalls(formData) {
@@ -253,7 +251,7 @@ $(document).ready(() => {
         // Error checking for each AJAX call
     $.ajaxSetup({
       error(xhr, status, error) {
-        console.log(`An AJAX error occurred: ${xhr.status} ${error}.`);
+        Materialize.toast(`An AJAX error occurred: ${xhr.status} ${error}.`, 3000, 'deep-orange darken-4');
       },
     });
 
@@ -301,7 +299,7 @@ $(document).ready(() => {
     } else if (currentTemp >= formData.hotMax) {
       currentConditions = 'hot';
     } else {
-      Materialize.toast('Something went wrong!', 3000);
+      Materialize.toast('Something went wrong!', 3000, 'deep-orange darken-4');
     }
 
 

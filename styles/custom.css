@@ -54,9 +54,10 @@ input.inputTemp {
 
 }
 
-#currDisplay{
-    display: inline-block;
+#innerRow {
+    display: flex;
 }
+
 
 .outfitList{
     font-family: 'Khula', serif;
