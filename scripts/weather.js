@@ -40,7 +40,7 @@ $(document).ready(() => {
   const BOTTOMS = {
     cold: ['Pants'],
     cool: ['Pants', 'Leggings'],
-    warm: ['Leggings', 'Shorts', 'Skirt'],
+    warm: ['Shorts', 'Skirt'],
     hot: ['Shorts', 'Skirt'],
   };
 
@@ -60,14 +60,14 @@ $(document).ready(() => {
     // Listener for "validation" of #nickname field
   $('#nickname').change(() => {
     if (!NICKNAME_REGEX.test($('#nickname').val())) {
-      Materialize.toast('Nickname must be at least 4 characters in length, alphanumeric, "-" and "_" allowed', 3000, 'amber darken-2');
+      Materialize.toast('Nickname must be at least 4 characters in length, alphanumeric, "-" and "_" allowed, no spaces.', 3000, 'amber darken-2');
     }
   });
 
     // Listener for "validation" of #zipcode field
   $('#zipcode').change(() => {
     if (!ZIP_REGEX.test($('#zipcode').val())) {
-      Materialize.toast('Invalid ZIP code format', 3000, 'amber darken-2');
+      Materialize.toast('Invalid ZIP code format.', 3000, 'amber darken-2');
     }
   });
 
@@ -79,7 +79,7 @@ $(document).ready(() => {
 
   $('#hotmax').change(() => {
     if (Number($('#hotmax').val()) <= Number($('#coldmax').val())) {
-      Materialize.toast(`Please enter a value greater than ${$('#coldmax').val()}`, 3000, 'amber darken-2');
+      Materialize.toast(`Please enter a value greater than ${$('#coldmax').val()}.`, 3000, 'amber darken-2');
     }
   });
 
