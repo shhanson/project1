@@ -39,10 +39,54 @@ input.inputTemp {
     color: yellow;
 }
 
+#title {
+    font-family: 'Varela Round', sans-serif;
+}
+
 #resultpage {
     display: none;
+
+}
+
+#innerCol{
+    border-radius: 15px;
 }
 
 #currDisplay{
     display: inline-block;
+}
+
+.outfitList{
+    font-family: 'Khula', serif;
+}
+
+input[type=text]{
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid skyblue;
+    border-radius: 0;
+    outline: none;
+    height: 2rem;
+    font-size: 1rem;
+    margin: 0 0 20px 0;
+    padding: 0;
+    box-shadow: none;
+    box-sizing: content-box;
+    transition: all 0.3s;
+}
+
+.btn {
+    background-color: skyblue;
+    border-radius: 25px;
+}
+
+[type="radio"]:checked + label:after,
+[type="radio"].with-gap:checked + label:before,
+[type="radio"].with-gap:checked + label:after {
+  border: 2px solid skyblue;
+}
+
+[type="radio"]:checked + label:after,
+[type="radio"].with-gap:checked + label:after {
+  background-color: skyblue;
 }

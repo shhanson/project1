@@ -107,7 +107,7 @@ $(document).ready(function() {
         $body.css("background-image", `url('${BACKGROUNDS[tempData.currentIcon]}')`);
         $body.css("background-size", "cover");
 
-        let $innerCol = $("<div class='col s12 white center-align'></div>");
+        let $innerCol = $("<div class='col s12 white center-align' id='innerCol'></div>");
 
 
         let $header = $(`<h4 class="center-align">${formData.nickname} you should wear:</h4>`);
@@ -115,7 +115,7 @@ $(document).ready(function() {
         $("#resultpage").append($innerCol);
 
         //BEGIN OUTFIT DISPLAY
-        let $topList = $("<h3></h3>");
+        let $topList = $("<h3 class='outfitList'></h3>");
         let str = "";
         for (let i = 0; i < outfit.top.length; i++) {
             if (i !== outfit.top.length - 1) {
@@ -128,7 +128,7 @@ $(document).ready(function() {
         $topList.text(str);
         $innerCol.append($topList);
 
-        let $bottomList = $("<h3></h3>");
+        let $bottomList = $("<h3 class='outfitList'></h3>");
         str = "";
 
         for (let i = 0; i < outfit.bottom.length; i++) {
@@ -143,7 +143,7 @@ $(document).ready(function() {
         $innerCol.append($bottomList);
 
         if (outfit.outer[0] !== "None") {
-            let $outerList = $("<h3></h3>");
+            let $outerList = $("<h3 class='outfitList'></h3>");
             str = "";
             for (let i = 0; i < outfit.outer.length; i++) {
                 if (i !== outfit.outer.length - 1) {
@@ -157,7 +157,7 @@ $(document).ready(function() {
             $innerCol.append($outerList);
         }
 
-        let $shoes = $("<h3></h3>");
+        let $shoes = $("<h3 class='outfitList'></h3>");
 
         if (outfit.closedToeShoes) {
             $shoes.text("Closed-toe shoes");
@@ -167,7 +167,7 @@ $(document).ready(function() {
         $innerCol.append($shoes);
 
         if (outfit.accessories[0] !== "None") {
-            let $accessoryList = $("<h3></h3>");
+            let $accessoryList = $("<h3 class='outfitList'></h3>");
             str = "";
             for (let i = 0; i < outfit.accessories.length; i++) {
                 if (i !== outfit.accessories.length - 1) {
