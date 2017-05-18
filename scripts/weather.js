@@ -6,28 +6,28 @@ $(document).ready(function() {
     const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const ICONS = {
-        "clear-day": "yellow-text wi wi-day-sunny",
-        "clear-night": "indigo-text text-darken-4 wi wi-night-clear",
-        "cloudy": "text-grey text-darken-1 wi wi-cloudy",
-        "fog": "text-grey text-darken-2 wi wi-fog",
-        "partly-cloudy-day": "text-grey text-darken-1 wi wi-day-cloudy",
-        "partly-cloudy-night": "text-grey text-darken-1 wi wi-night-alt-partly-cloudy",
-        "rain": "text-blue text-darken-2 wi wi-rain",
-        "sleet": "text-grey text-lighten-1 wi wi-sleet",
-        "snow": "text-grey text-lighten-1 wi wi-snow",
-        "wind": "text-grey wi-strong-wind"
+        "clear-day": "wi wi-day-sunny",
+        "clear-night": "wi wi-night-clear",
+        "cloudy": "wi wi-cloudy",
+        "fog": "wi wi-fog",
+        "partly-cloudy-day": "wi wi-day-cloudy",
+        "partly-cloudy-night": "wi wi-night-alt-partly-cloudy",
+        "rain": "wi wi-rain",
+        "sleet": "wi wi-sleet",
+        "snow": "wi wi-snow",
+        "wind": "wi-strong-wind"
     }
 
     const BACKGROUNDS = {
-        "clear-day": "./images/backgrounds/clear-day.jpeg",
-        "clear-night": "./images/backgrounds/clear-night.jpeg",
-        "cloudy": "./images/backgrounds/cloudy.jpeg",
+        "clear-day": "./images/backgrounds/clear-day.jpg",
+        "clear-night": "./images/backgrounds/clear-night.jpg",
+        "cloudy": "./images/backgrounds/cloudy.jpg",
         "fog": "./images/backgrounds/fog.jpg",
         "partly-cloudy-day": "./images/backgrounds/partly-cloudy-day.jpg",
-        "partly-cloudy-night": "./images/backgrounds/partly-cloudy-night.jpeg",
-        "rain": "./images/backgrounds/rain.jpeg",
-        "snow": "./images/backgrounds/snow.jpeg",
-        "sleet": "./images/backgrounds/snow.jpeg",
+        "partly-cloudy-night": "./images/backgrounds/partly-cloudy-night.jpg",
+        "rain": "./images/backgrounds/rain.jpg",
+        "snow": "./images/backgrounds/snow.jpg",
+        "sleet": "./images/backgrounds/snow.jpg",
         "wind": "./images/backgrounds/wind.jpg"
     };
 
