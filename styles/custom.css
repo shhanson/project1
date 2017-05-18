@@ -1,5 +1,5 @@
 div {
-    padding: 8px;
+    padding: 12px;
 }
 
 input.inputText {
@@ -36,11 +36,12 @@ input.inputTemp {
 }
 
 .wi-day-sunny{
-    color: yellow;
+    color: khaki;
 }
 
 #title {
     font-family: 'Varela Round', sans-serif;
+    color: midnightblue;
 }
 
 #resultpage {
@@ -48,8 +49,9 @@ input.inputTemp {
 
 }
 
-#innerCol{
-    border-radius: 15px;
+#innerCol, #page1InnerCol{
+    border-radius: 20px;
+
 }
 
 #currDisplay{

@@ -63,14 +63,14 @@ $(document).ready(function() {
     //Listener for "validation" of #nickname field
     $("#nickname").change(function() {
         if (!NICKNAME_REGEX.test($("#nickname").val())) {
-            Materialize.toast('Nickname must be at least 4 characters in length, alphanumeric, "-" and "_" allowed', 4000);
+            Materialize.toast('Nickname must be at least 4 characters in length, alphanumeric, "-" and "_" allowed', 3000);
         }
     });
 
     //Listener for "validation" of #zipcode field
     $("#zipcode").change(function() {
         if (!ZIP_REGEX.test($("#zipcode").val())) {
-            Materialize.toast('Invalid ZIP code format', 4000);
+            Materialize.toast('Invalid ZIP code format', 3000);
         }
     });
 
@@ -81,7 +81,7 @@ $(document).ready(function() {
 
     $("#hotmax").change(function() {
         if (Number($("#hotmax").val()) <= Number($("#coldmax").val())) {
-            Materialize.toast(`Please enter a value greater than ${$("#coldmax").val()}`, 4000);
+            Materialize.toast(`Please enter a value greater than ${$("#coldmax").val()}`, 3000);
         }
     });
 
@@ -107,10 +107,10 @@ $(document).ready(function() {
         $body.css("background-image", `url('${BACKGROUNDS[tempData.currentIcon]}')`);
         $body.css("background-size", "cover");
 
-        let $innerCol = $("<div class='col s12 white center-align' id='innerCol'></div>");
+        let $innerCol = $("<div class='col s12 white center-align z-depth-1' id='innerCol'></div>");
 
 
-        let $header = $(`<h4 class="center-align">${formData.nickname} you should wear:</h4>`);
+        let $header = $(`<h4 class="center-align grey-text text-darken-1">${formData.nickname} you should wear:</h4>`);
         $innerCol.append($header);
         $("#resultpage").append($innerCol);
 
@@ -219,8 +219,7 @@ $(document).ready(function() {
         $currentInfo.append(`<p>${currDate} @ ${currTime}</p>`);
 
 
-        $currentInfo.append(`<h2>${currTemp}${symbol} <i class="${ICONS[tempData.currentIcon]}"></i></h2>`);
-        console.log(ICONS[tempData.currentIcon]);
+        $currentInfo.append(`<h2 class="center-align">${currTemp}${symbol} <i class="${ICONS[tempData.currentIcon]}"></i></h2>`);
 
 
         let highTemp = calcTemp(formData.units, tempData.highTemp.temp);
@@ -252,7 +251,7 @@ $(document).ready(function() {
         if (formData.hotMax > formData.coldMax && ZIP_REGEX.test(formData.zipcode) && NICKNAME_REGEX.test(formData.nickname)) {
             return formData;
         } else {
-            Materialize.toast("Input error!", 4000);
+            Materialize.toast("Input error!", 3000);
             return;
         }
     } //END processForm
@@ -319,9 +318,8 @@ $(document).ready(function() {
             currentConditions = "hot";
         } else {
             console.log("ERROR!");
-            Materialize.toast("Something went wrong!", 4000);
+            Materialize.toast("Something went wrong!", 3000);
         }
-        console.log(currentConditions);
 
 
 
