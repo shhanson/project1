@@ -58,7 +58,6 @@ $(document).ready(function() {
     };
 
 
-
     //Listener for "validation" of #nickname field
     $("#nickname").change(function() {
         if (!NICKNAME_REGEX.test($("#nickname").val())) {
@@ -75,17 +74,12 @@ $(document).ready(function() {
 
     //Listener for #coldmax field. Populates other field ranges based on input.
     $("#coldmax").change(function() {
-        $("#mildmin").val(Number($("#coldmax").val()) + 1);
-        $("#mildmax").val(Number($("#mildmin").val()) + 1);
-        $("#hotmax").val(Number($("#mildmax").val()) + 1);
+        $("#hotmax").val(Number($("#coldmax").val()) + 1);
     });
 
-    //Listener for #mildmax field. Populates other field ranges based on input.
-    $("#mildmax").change(function() {
-        if (Number($("#mildmax").val()) <= Number($("#mildmin").val())) {
-            Materialize.toast(`Please enter a value greater than ${$("#mildmin").val()}`, 4000);
-        } else {
-            $("#hotmax").val(Number($("#mildmax").val()) + 1);
+    $("#hotmax").change(function(){
+        if (Number($("#hotmax").val()) <= Number($("#coldmax").val())) {
+            Materialize.toast(`Please enter a value greater than ${$("#coldmax").val()}`, 4000);
         }
     });
 
@@ -254,13 +248,11 @@ $(document).ready(function() {
             zipcode: $("#zipcode").val(),
             units: $("input[name=units]:checked").val(),
             coldMax: Number($("#coldmax").val()),
-            mildMin: Number($("#mildmin").val()),
-            mildMax: Number($("#mildmax").val()),
             hotMax: Number($("#hotmax").val())
         };
 
         //Validating the fields before submission again JUST IN CASE
-        if (formData.mildMin > formData.coldMax && formData.mildMax > formData.mildMin && formData.hotMax > formData.mildMax && ZIP_REGEX.test(formData.zipcode) && NICKNAME_REGEX.test(formData.nickname)) {
+        if (formData.hotMax > formData.coldMax && ZIP_REGEX.test(formData.zipcode) && NICKNAME_REGEX.test(formData.nickname)) {
             return formData;
         } else {
             Materialize.toast("Input error!", 4000);
@@ -317,23 +309,39 @@ $(document).ready(function() {
 
         let currentConditions = "";
         let currentTemp = tempData.currentTemp;
-        let midMild = Math.round((formData.mildMax + formData.mildMin) / 2);
+        let midMild = Math.round((formData.coldMax + formData.hotMax) / 2);
 
 
+
+        // if(currentTemp <= formData.coldMax){
+        //     currentConditions = "cold";
+        // } else if(currentTemp >= formData.mildMin && currentTemp <= midMild){
+        //     currentConditions = "cool";
+        // } else if(currentTemp > midMild && currentTemp <= formData.mildMax){
+        //     currentConditions = "warm";
+        // } else if(currentTemp >= formData.hotMax){
+        //     currentConditions = "hot";
+        // } else {
+        //     console.log("ERROR!");
+        //     Materialize.toast("Something went wrong!", 4000);
+        //
+        // }
 
         if(currentTemp <= formData.coldMax){
             currentConditions = "cold";
-        } else if(currentTemp >= formData.mildMin && currentTemp <= midMild){
+        } else if(currentTemp > formData.coldMax && currentTemp <= midMild){
             currentConditions = "cool";
-        } else if(currentTemp > midMild && currentTemp <= formData.mildMax){
+        } else if(currentTemp > midMild && currentTemp < formData.hotMax){
             currentConditions = "warm";
-        } else if(currentTemp >= formData.hotMax){
+        } else if (currentTemp >= formData.hotMax) {
             currentConditions = "hot";
         } else {
             console.log("ERROR!");
             Materialize.toast("Something went wrong!", 4000);
-
         }
+        console.log(currentConditions);
+
+
 
         //console.log(currentConditions);
         outfit.top = TOPS[currentConditions];
@@ -398,8 +406,5 @@ $(document).ready(function() {
     function calcTemp(unit, temp) {
         return (unit === "Celcius") ? Math.round((temp - 32) * (5 / 9)) : temp;
     }
-
-
-
 
 });
