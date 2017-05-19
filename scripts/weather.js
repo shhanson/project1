@@ -165,7 +165,7 @@ $(document).ready(() => {
     $summaryInfo.append(`<p class="truncate">High: ${highTemp}<sup>o</sup> @ ${tempData.highTemp.timestamp}, Low: ${lowTemp}<sup>o</sup> @ ${tempData.lowTemp.timestamp}`);
     $summaryInfo.append(`<h2 class='center-align'><i class='${ICONS[tempData.dayIcon]}'></i></h2>`);
     //END DISPLAY OF CURRENT AND SUMMARY INFO
-    
+
     //BACK BUTTON CREATION
     const $buttonCol = $("<div class='col s12 center-align'></div>'");
     const $backButton = $("<button id='back' type='button' class='waves-effect waves-light btn'>Back</button>");
@@ -250,29 +250,28 @@ $(document).ready(() => {
     const outfit = [[], [], [], [], false];
 
     //Determine if the current temperature is "cold", "cool", "warm", or "hot"
-    let currentConditions = '';
-    const currentTemp = tempData.currentTemp.temp;
+    let dailyConditions = '';
+    let dailyAverage = Math.round((tempData.currentTemp.temp + tempData.highTemp.temp + tempData.lowTemp.temp) / 3);
     const midMild = Math.round((formData.coldMax + formData.hotMax) / 2);
 
-    if (currentTemp <= formData.coldMax) {
-      currentConditions = 'cold';
-    } else if (currentTemp > formData.coldMax && currentTemp <= midMild) {
-      currentConditions = 'cool';
-    } else if (currentTemp > midMild && currentTemp < formData.hotMax) {
-      currentConditions = 'warm';
-    } else if (currentTemp >= formData.hotMax) {
-      currentConditions = 'hot';
+    if (dailyAverage <= formData.coldMax) {
+      dailyConditions = 'cold';
+    } else if (dailyAverage > formData.coldMax && dailyAverage <= midMild) {
+      dailyConditions = 'cool';
+    } else if (dailyAverage > midMild && dailyAverage < formData.hotMax) {
+      dailyConditions = 'warm';
+    } else if (dailyAverage >= formData.hotMax) {
+      dailyConditions = 'hot';
     } else {
       Materialize.toast('Something went wrong!', 3000, 'deep-orange darken-4');
     }
 
-    //Set the outfit based on currentConditions
-    outfit[0] = TOPS[currentConditions];
-    outfit[1] = BOTTOMS[currentConditions];
-    outfit[2] = OUTER[currentConditions];
+    //Set the outfit based on dailyConditions
+    outfit[0] = TOPS[dailyConditions];
+    outfit[1] = BOTTOMS[dailyConditions];
+    outfit[2] = OUTER[dailyConditions];
     outfit[3].push(((tempData.currentIcon === 'rain' || tempData.dayIcon === 'rain') ? ACCESSORIES.rain : 'None'));
-    outfit[4] = (!!((currentConditions === 'cold' || currentConditions === 'cool' || tempData.currentIcon === 'rain' || tempData.dayIcon === 'rain')));
-    //console.log(outfit);
+    outfit[4] = (!!((dailyConditions === 'cold' || dailyConditions === 'cool' || tempData.currentIcon === 'rain' || tempData.dayIcon === 'rain')));
     return outfit;
   }
 
