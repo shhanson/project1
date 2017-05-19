@@ -1,5 +1,6 @@
 $(document).ready(() => {
     // Constants
+  const CORS_PROXY = "http://galvanize-cors-proxy.herokuapp.com/";
   const ZIP_REGEX = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
   const NICKNAME_REGEX = /^[A-Za-z0-9_\-]{4,}$/;
   const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -118,11 +119,7 @@ $(document).ready(() => {
         let str = '';
         if(i === 3){
             let $shoes = $("<h3 class='outfitList'></h3>");
-            if(outfit[4] === "false"){
-                $shoes.text("Open-toe shoes");
-            } else {
-                $shoes.text("Closed-toe shoes");
-            }
+            $shoes.text( ((outfit[4]) ? "Closed-toe shoes" : "Open-toe shoes"));
             $innerCol.append($shoes);
         }
         for(let j = 0; j < outfit[i].length; j++){
@@ -212,7 +209,7 @@ $(document).ready(() => {
     });
 
     //Call for geocoding data from Google
-    const $xhr_google = $.getJSON(`http://galvanize-cors-proxy.herokuapp.com/https://maps.googleapis.com/maps/api/geocode/json?address=${formData.zipcode}&key=AIzaSyBB6SAGxzrKyG3TEhlDJDLNfulXhPguo3M`);
+    const $xhr_google = $.getJSON(`${CORS_PROXY}https://maps.googleapis.com/maps/api/geocode/json?address=${formData.zipcode}&key=AIzaSyBB6SAGxzrKyG3TEhlDJDLNfulXhPguo3M`);
 
 
     $xhr_google.done((googleData) => {
@@ -221,7 +218,7 @@ $(document).ready(() => {
       city = googleData.results[0].address_components[1].short_name;
 
       //Call for Dark Sky data
-      const $xhr_darksky = $.getJSON(`http://galvanize-cors-proxy.herokuapp.com/https://api.darksky.net/forecast/4425e1c1ccfdf34f99ecc35f208760b3/${latitude},${longitude}`);
+      const $xhr_darksky = $.getJSON(`${CORS_PROXY}https://api.darksky.net/forecast/4425e1c1ccfdf34f99ecc35f208760b3/${latitude},${longitude}`);
 
       //currentTemp, highTemp, and lowTemp are objects containing the temperature and timestamp
       $xhr_darksky.done((darkskyData) => {
@@ -271,7 +268,10 @@ $(document).ready(() => {
     outfit[1] = BOTTOMS[dailyConditions];
     outfit[2] = OUTER[dailyConditions];
     outfit[3].push(((tempData.currentIcon === 'rain' || tempData.dayIcon === 'rain') ? ACCESSORIES.rain : 'None'));
-    outfit[4] = (!!((dailyConditions === 'cold' || dailyConditions === 'cool' || tempData.currentIcon === 'rain' || tempData.dayIcon === 'rain')));
+    // outfit[4] = (!!((dailyConditions === 'cold' || dailyConditions === 'cool' || tempData.currentIcon === 'rain' || tempData.dayIcon === 'rain')));
+
+    outfit[4] = (dailyConditions === 'cold' || dailyConditions === 'cool' || tempData.currentIcon === 'rain' || tempData.dayIcon === 'rain');
+
     return outfit;
   }
 
