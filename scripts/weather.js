@@ -111,72 +111,33 @@ $(document).ready(() => {
     $innerCol.append($header);
     $('#resultpage').append($innerCol);
 
-        // BEGIN OUTFIT DISPLAY
-    const $topList = $("<h3 class='outfitList'></h3>");
-    let str = '';
-    for (let i = 0; i < outfit.top.length; i++) {
-      if (i !== outfit.top.length - 1) {
-        str += `${outfit.top[i]} or `;
-      } else {
-        str += outfit.top[i];
-      }
-    }
 
-    $topList.text(str);
-    $innerCol.append($topList);
-
-    const $bottomList = $("<h3 class='outfitList'></h3>");
-    str = '';
-
-    for (let i = 0; i < outfit.bottom.length; i++) {
-      if (i !== outfit.bottom.length - 1) {
-        str += `${outfit.bottom[i]} or `;
-      } else {
-        str += outfit.bottom[i];
-      }
-    }
-
-    $bottomList.text(str);
-    $innerCol.append($bottomList);
-
-    if (outfit.outer[0] !== 'None') {
-      const $outerList = $("<h3 class='outfitList'></h3>");
-      str = '';
-      for (let i = 0; i < outfit.outer.length; i++) {
-        if (i !== outfit.outer.length - 1) {
-          str += `${outfit.outer[i]} or `;
-        } else {
-          str += outfit.outer[i];
+    //BEGIN OUTFIT DISPLAY
+    for(let i = 0; i < outfit.length; i++){
+        let $h3 = $("<h3 class='outfitList'></h3>");
+        let str = '';
+        if(i === 3){
+            let $shoes = $("<h3 class='outfitList'></h3>");
+            if(outfit[4] === "false"){
+                $shoes.text("Open-toe shoes");
+            } else {
+                $shoes.text("Closed-toe shoes");
+            }
+            $innerCol.append($shoes);
         }
-      }
-
-      $outerList.text(str);
-      $innerCol.append($outerList);
-    }
-
-    const $shoes = $("<h3 class='outfitList'></h3>");
-
-    if (outfit.closedToeShoes) {
-      $shoes.text('Closed-toe shoes');
-    } else {
-      $shoes.text('Open-toe shoes');
-    }
-    $innerCol.append($shoes);
-
-    if (outfit.accessories[0] !== 'None') {
-      const $accessoryList = $("<h3 class='outfitList'></h3>");
-      str = '';
-      for (let i = 0; i < outfit.accessories.length; i++) {
-        if (i !== outfit.accessories.length - 1) {
-          str += `${outfit.accessories[i]} or `;
-        } else {
-          str += outfit.accessories[i];
+        for(let j = 0; j < outfit[i].length; j++){
+            if(outfit[i][j] !== "None"){
+                if(j !== outfit[i].length - 1){
+                    str += `${outfit[i][j]} or `;
+                } else {
+                    str += outfit[i][j];
+                }
+            }
         }
-      }
-      $accessoryList.text(str);
-      $innerCol.append($accessoryList);
-    }
-        // END OUTFIT DISPLAY
+        $h3.text(str);
+        $innerCol.append($h3);
+    }   //END OUTFIT DISPLAY
+
 
 
     const $innerRow = $("<div class='row' id='innerRow'></div>");
@@ -278,7 +239,8 @@ $(document).ready(() => {
   } // END ajaxCalls
 
   function generateOutfit(formData, tempData) {
-    const outfit = {};
+    const outfit = [{}, {}, {}, [], false];
+
 
     let currentConditions = '';
     const currentTemp = tempData.currentTemp.temp;
@@ -298,17 +260,15 @@ $(document).ready(() => {
     }
 
 
-    outfit.top = TOPS[currentConditions];
-    outfit.bottom = BOTTOMS[currentConditions];
-    outfit.outer = OUTER[currentConditions];
-
-    outfit.accessories = [];
-    outfit.accessories.push(((tempData.currentIcon === 'rain' || tempData.dayIcon === 'rain') ? ACCESSORIES.rain : 'None'));
+    outfit[0] = TOPS[currentConditions];
+    outfit[1] = BOTTOMS[currentConditions];
+    outfit[2] = OUTER[currentConditions];
+    outfit[3].push(((tempData.currentIcon === 'rain' || tempData.dayIcon === 'rain') ? ACCESSORIES.rain : 'None'));
 
 
-    outfit.closedToeShoes = (!!((currentConditions === 'cold' || currentConditions === 'cool' || tempData.currentIcon === 'rain' || tempData.dayIcon === 'rain')));
+    outfit[4] = (!!((currentConditions === 'cold' || currentConditions === 'cool' || tempData.currentIcon === 'rain' || tempData.dayIcon === 'rain')));
 
-
+    console.log(outfit);
     return outfit;
   }
 
