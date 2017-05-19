@@ -7,27 +7,27 @@ $(document).ready(() => {
   const ICONS = {
     'clear-day': 'wi wi-day-sunny',
     'clear-night': 'wi wi-night-clear',
-    cloudy: 'wi wi-cloudy',
-    fog: 'wi wi-fog',
+    'cloudy': 'wi wi-cloudy',
+    'fog': 'wi wi-fog',
     'partly-cloudy-day': 'wi wi-day-cloudy',
     'partly-cloudy-night': 'wi wi-night-alt-partly-cloudy',
-    rain: 'wi wi-rain',
-    sleet: 'wi wi-sleet',
-    snow: 'wi wi-snow',
-    wind: 'wi-strong-wind',
+    'rain': 'wi wi-rain',
+    'sleet': 'wi wi-sleet',
+    'snow': 'wi wi-snow',
+    'wind': 'wi-strong-wind',
   };
 
   const BACKGROUNDS = {
     'clear-day': './images/backgrounds/clear-day.jpg',
     'clear-night': './images/backgrounds/clear-night.jpg',
-    cloudy: './images/backgrounds/cloudy.jpg',
-    fog: './images/backgrounds/fog.jpg',
+    'cloudy': './images/backgrounds/cloudy.jpg',
+    'fog': './images/backgrounds/fog.jpg',
     'partly-cloudy-day': './images/backgrounds/partly-cloudy-day.jpg',
     'partly-cloudy-night': './images/backgrounds/partly-cloudy-night.jpg',
-    rain: './images/backgrounds/rain.jpg',
-    snow: './images/backgrounds/snow.jpg',
-    sleet: './images/backgrounds/snow.jpg',
-    wind: './images/backgrounds/wind.jpg',
+    'rain': './images/backgrounds/rain.jpg',
+    'snow': './images/backgrounds/snow.jpg',
+    'sleet': './images/backgrounds/snow.jpg',
+    'wind': './images/backgrounds/wind.jpg',
   };
 
   const TOPS = {
@@ -52,7 +52,7 @@ $(document).ready(() => {
   };
 
   const ACCESSORIES = {
-    rain: ['Umbrella'],
+    'rain': ['Umbrella'],
     'clear-day': ['Sunglasses'],
   };
 
@@ -71,12 +71,13 @@ $(document).ready(() => {
     }
   });
 
-    // Listener for #coldmax field. Populates other field ranges based on input.
+    // Listener for #coldmax field. Populates #hotmax placeholder based on input.
   $('#coldmax').change(() => {
     // $('#hotmax').val(Number($('#coldmax').val()) + 1);
     $('#hotmax').attr('placeholder', Number($('#coldmax').val()) + 1);
   });
 
+  //Listener for "validation" of #hotmax field
   $('#hotmax').change(() => {
     if (Number($('#hotmax').val()) <= Number($('#coldmax').val())) {
       Materialize.toast(`Please enter a value greater than ${$('#coldmax').val()}.`, 3000, 'amber darken-2');
@@ -96,21 +97,20 @@ $(document).ready(() => {
   });
 
 
+  //Hides the form and displays results
   function displayResults(formData, tempData, outfit) {
     $('#page1').toggle();
 
+    //Changes background image of the page based on current conditions
     const $body = $('body');
-
     $body.css('background-image', `url('${BACKGROUNDS[tempData.currentIcon]}')`);
     $body.css('background-size', 'cover');
 
     const $innerCol = $("<div class='col s12 white center-align z-depth-1' id='innerCol'></div>");
-
-
     const $header = $(`<h4 class="center-align grey-text text-darken-1">${formData.nickname} you should wear:</h4>`);
+
     $innerCol.append($header);
     $('#resultpage').append($innerCol);
-
 
     //BEGIN OUTFIT DISPLAY
     for(let i = 0; i < outfit.length; i++){
@@ -136,10 +136,9 @@ $(document).ready(() => {
         }
         $h3.text(str);
         $innerCol.append($h3);
-    }   //END OUTFIT DISPLAY
+    }  //END OUTFIT DISPLAY
 
-
-
+    //BEGIN DISPLAY FOR CURRENT AND SUMMARY INFO
     const $innerRow = $("<div class='row' id='innerRow'></div>");
     const $valignWrapper = $("<div class='valign-wrapper'></div>");
     const $currentInfo = $("<div class='col s6 left-align' id='currentInfo'></div>");
@@ -150,6 +149,24 @@ $(document).ready(() => {
     $innerRow.append($summaryInfo);
 
 
+    //CURRENT INFO
+    const currTemp = calcTemp(formData.units, tempData.currentTemp.temp);
+    const symbol = ((formData.units === 'Celcius') ? '&#8451' : '&#8457');
+
+    $currentInfo.append(`<p><strong>Currently in ${tempData.city}:</strong></p>`);
+    $currentInfo.append(`<p class="truncate">${tempData.currentDate} ${tempData.currentTemp.timestamp}</p>`);
+    $currentInfo.append(`<h2 class="center-align">${currTemp}${symbol} <i class="${ICONS[tempData.currentIcon]}"></i></h2>`);
+
+    //SUMMARY INFO
+    const highTemp = calcTemp(formData.units, tempData.highTemp.temp);
+    const lowTemp = calcTemp(formData.units, tempData.lowTemp.temp);
+
+    $summaryInfo.append('<p><strong>8-hr Summary:</strong></p>');
+    $summaryInfo.append(`<p class="truncate">High: ${highTemp}<sup>o</sup> @ ${tempData.highTemp.timestamp}, Low: ${lowTemp}<sup>o</sup> @ ${tempData.lowTemp.timestamp}`);
+    $summaryInfo.append(`<h2 class='center-align'><i class='${ICONS[tempData.dayIcon]}'></i></h2>`);
+    //END DISPLAY OF CURRENT AND SUMMARY INFO
+    
+    //BACK BUTTON CREATION
     const $buttonCol = $("<div class='col s12 center-align'></div>'");
     const $backButton = $("<button id='back' type='button' class='waves-effect waves-light btn'>Back</button>");
 
@@ -159,24 +176,6 @@ $(document).ready(() => {
 
     $innerCol.append($buttonCol);
     $buttonCol.append($backButton);
-
-
-    const date = new Date();
-    const currDate = `${DAYS[date.getDay()]} ${MONTHS[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
-
-    const currTemp = calcTemp(formData.units, tempData.currentTemp.temp);
-    const symbol = ((formData.units === 'Celcius') ? '&#8451' : '&#8457');
-
-    $currentInfo.append(`<p><strong>Currently in ${tempData.city}:</strong></p>`);
-    $currentInfo.append(`<p class="truncate">${currDate} ${tempData.currentTemp.timestamp}</p>`);
-    $currentInfo.append(`<h2 class="center-align">${currTemp}${symbol} <i class="${ICONS[tempData.currentIcon]}"></i></h2>`);
-
-    const highTemp = calcTemp(formData.units, tempData.highTemp.temp);
-    const lowTemp = calcTemp(formData.units, tempData.lowTemp.temp);
-
-    $summaryInfo.append('<p><strong>8-hr Summary:</strong></p>');
-    $summaryInfo.append(`<p class="truncate">High: ${highTemp}<sup>o</sup> @ ${tempData.highTemp.timestamp}, Low: ${lowTemp}<sup>o</sup> @ ${tempData.lowTemp.timestamp}`);
-    $summaryInfo.append(`<h2 class='center-align'><i class='${ICONS[tempData.dayIcon]}'></i></h2>`);
 
     $('#resultpage').toggle();
   } // END displayResults
@@ -191,26 +190,28 @@ $(document).ready(() => {
       hotMax: Number($('#hotmax').val()),
     };
 
-        // Validating the fields before submission again JUST IN CASE
+    // Validating the fields before submission again JUST IN CASE
     if (formData.hotMax > formData.coldMax && NICKNAME_REGEX.test(formData.nickname) && ZIP_REGEX.test(formData.zipcode)) {
       return formData;
     }
     Materialize.toast('Input error!', 3000, 'deep-orange darken-4');
   } // END processForm
 
+  //Function to make the API calls and gather the data
   function ajaxCalls(formData) {
     let longitude;
     let latitude;
     let city;
     let tempData;
 
-        // Error checking for each AJAX call
+    // Error checking for each AJAX call
     $.ajaxSetup({
       error(xhr, status, error) {
         Materialize.toast(`An AJAX error occurred: ${xhr.status} ${error}.`, 3000, 'deep-orange darken-4');
       },
     });
 
+    //Call for geocoding data from Google
     const $xhr_google = $.getJSON(`http://galvanize-cors-proxy.herokuapp.com/https://maps.googleapis.com/maps/api/geocode/json?address=${formData.zipcode}&key=AIzaSyBB6SAGxzrKyG3TEhlDJDLNfulXhPguo3M`);
 
 
@@ -219,33 +220,39 @@ $(document).ready(() => {
       longitude = googleData.results[0].geometry.location.lng;
       city = googleData.results[0].address_components[1].short_name;
 
+      //Call for Dark Sky data
       const $xhr_darksky = $.getJSON(`http://galvanize-cors-proxy.herokuapp.com/https://api.darksky.net/forecast/4425e1c1ccfdf34f99ecc35f208760b3/${latitude},${longitude}`);
 
+      //currentTemp, highTemp, and lowTemp are objects containing the temperature and timestamp
       $xhr_darksky.done((darkskyData) => {
         tempData = {
-          currentTemp: getCurrentTemp(darkskyData.currently),
+          currentTemp: getForecastObject(darkskyData.currently.temperature, darkskyData.currently.time),
           currentIcon: darkskyData.currently.icon,
           dayIcon: darkskyData.daily.icon,
           highTemp: getHighTemp(darkskyData.hourly.data),
           lowTemp: getLowTemp(darkskyData.hourly.data),
           city,
         };
+
+        const date = new Date(darkskyData.currently.time*1000);
+        tempData.currentDate = `${DAYS[date.getDay()]} ${MONTHS[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+
         const outfit = generateOutfit(formData, tempData);
         displayResults(formData, tempData, outfit);
       }); // END $xhr_darksky.done
     }); // END $xhr_google.done
 
-    return tempData;
   } // END ajaxCalls
 
+  //Function that returns an object representing the outfit
   function generateOutfit(formData, tempData) {
-    const outfit = [{}, {}, {}, [], false];
+    //outfit stores objects in this order: tops, bottoms, outer, accessores, and closedToedShoes (boolean)
+    const outfit = [[], [], [], [], false];
 
-
+    //Determine if the current temperature is "cold", "cool", "warm", or "hot"
     let currentConditions = '';
     const currentTemp = tempData.currentTemp.temp;
     const midMild = Math.round((formData.coldMax + formData.hotMax) / 2);
-
 
     if (currentTemp <= formData.coldMax) {
       currentConditions = 'cold';
@@ -259,21 +266,28 @@ $(document).ready(() => {
       Materialize.toast('Something went wrong!', 3000, 'deep-orange darken-4');
     }
 
-
+    //Set the outfit based on currentConditions
     outfit[0] = TOPS[currentConditions];
     outfit[1] = BOTTOMS[currentConditions];
     outfit[2] = OUTER[currentConditions];
     outfit[3].push(((tempData.currentIcon === 'rain' || tempData.dayIcon === 'rain') ? ACCESSORIES.rain : 'None'));
-
-
     outfit[4] = (!!((currentConditions === 'cold' || currentConditions === 'cool' || tempData.currentIcon === 'rain' || tempData.dayIcon === 'rain')));
-
-    console.log(outfit);
+    //console.log(outfit);
     return outfit;
   }
 
+  function getForecastObject(temp, time){
+      let forecastObj = {};
+      forecastObj.temp = Math.round(temp);
+      const date = new Date(time * 1000);
+      const ampm = (date.getHours() >= 12) ? 'PM' : 'AM';
+      const hour = (date.getHours() > 12) ? date.getHours() % 12 : date.getHours();
+      const minutes = formatMinutes(date.getMinutes());
+      forecastObj.timestamp = `${hour}:${minutes}${ampm}`;
+      return forecastObj;
+  }
+
   function getHighTemp(array) {
-    const forecastObj = {};
     let maxTemp = Number.MIN_SAFE_INTEGER;
     let maxTempTime;
     for (let i = 0; i < 8; i++) {
@@ -283,13 +297,7 @@ $(document).ready(() => {
       }
     }
 
-    forecastObj.temp = Math.round(maxTemp);
-    const date = new Date(maxTempTime * 1000);
-    const ampm = (date.getHours() >= 12) ? 'PM' : 'AM';
-    const hour = (date.getHours() > 12) ? date.getHours() % 12 : date.getHours();
-    const minutes = formatMinutes(date.getMinutes());
-    forecastObj.timestamp = `${hour}:${minutes}${ampm}`;
-    return forecastObj;
+    return getForecastObject(maxTemp, maxTempTime);
   }
 
   function getLowTemp(array) {
@@ -303,25 +311,7 @@ $(document).ready(() => {
       }
     }
 
-    forecastObj.temp = Math.round(minTemp);
-    const date = new Date(minTempTime * 1000);
-    const ampm = (date.getHours() >= 12) ? 'PM' : 'AM';
-    const hour = (date.getHours() > 12) ? date.getHours() % 12 : date.getHours();
-    const minutes = formatMinutes(date.getMinutes());
-    forecastObj.timestamp = `${hour}:${minutes}${ampm}`;
-    return forecastObj;
-  }
-
-  function getCurrentTemp(data){
-      forecastObj = {};
-      forecastObj.temp = Math.round(data.temperature);
-      const date = new Date(data.time * 1000);
-      const ampm = (date.getHours() >= 12) ? 'PM' : 'AM';
-      const hour = (date.getHours() > 12) ? date.getHours() % 12 : date.getHours();
-      const minutes = formatMinutes(date.getMinutes());
-      forecastObj.timestamp = `${hour}:${minutes}${ampm}`;
-      return forecastObj;
-
+    return getForecastObject(minTemp, minTempTime);
   }
 
   function formatMinutes(minutes) {
