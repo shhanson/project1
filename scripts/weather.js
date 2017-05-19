@@ -202,17 +202,12 @@ $(document).ready(() => {
 
     const date = new Date();
     const currDate = `${DAYS[date.getDay()]} ${MONTHS[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
-    const currMinutes = formatMinutes(date.getMinutes());
-    const ampm = (date.getHours() >= 12) ? 'PM' : 'AM';
-    const currHour = (date.getHours() > 12) ? date.getHours() % 12 : date.getHours();
-    const currTime = `${currHour}:${currMinutes}${ampm}`;
 
-
-    const currTemp = calcTemp(formData.units, tempData.currentTemp);
+    const currTemp = calcTemp(formData.units, tempData.currentTemp.temp);
     const symbol = ((formData.units === 'Celcius') ? '&#8451' : '&#8457');
 
     $currentInfo.append(`<p><strong>Currently in ${tempData.city}:</strong></p>`);
-    $currentInfo.append(`<p class="truncate">${currDate} @ ${currTime}</p>`);
+    $currentInfo.append(`<p class="truncate">${currDate} ${tempData.currentTemp.timestamp}</p>`);
     $currentInfo.append(`<h2 class="center-align">${currTemp}${symbol} <i class="${ICONS[tempData.currentIcon]}"></i></h2>`);
 
     const highTemp = calcTemp(formData.units, tempData.highTemp.temp);
@@ -267,7 +262,7 @@ $(document).ready(() => {
 
       $xhr_darksky.done((darkskyData) => {
         tempData = {
-          currentTemp: Math.round(darkskyData.currently.temperature),
+          currentTemp: getCurrentTemp(darkskyData.currently),
           currentIcon: darkskyData.currently.icon,
           dayIcon: darkskyData.daily.icon,
           highTemp: getHighTemp(darkskyData.hourly.data),
@@ -286,7 +281,7 @@ $(document).ready(() => {
     const outfit = {};
 
     let currentConditions = '';
-    const currentTemp = tempData.currentTemp;
+    const currentTemp = tempData.currentTemp.temp;
     const midMild = Math.round((formData.coldMax + formData.hotMax) / 2);
 
 
@@ -355,6 +350,18 @@ $(document).ready(() => {
     const minutes = formatMinutes(date.getMinutes());
     forecastObj.timestamp = `${hour}:${minutes}${ampm}`;
     return forecastObj;
+  }
+
+  function getCurrentTemp(data){
+      forecastObj = {};
+      forecastObj.temp = Math.round(data.temperature);
+      const date = new Date(data.time * 1000);
+      const ampm = (date.getHours() >= 12) ? 'PM' : 'AM';
+      const hour = (date.getHours() > 12) ? date.getHours() % 12 : date.getHours();
+      const minutes = formatMinutes(date.getMinutes());
+      forecastObj.timestamp = `${hour}:${minutes}${ampm}`;
+      return forecastObj;
+
   }
 
   function formatMinutes(minutes) {
