@@ -3,6 +3,7 @@ $(document).ready(() => {
   const CORS_PROXY = "http://galvanize-cors-proxy.herokuapp.com/";
   const ZIP_REGEX = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
   const NICKNAME_REGEX = /^[A-Za-z0-9_\-]{4,}$/;
+  const SUM_HOURS = 8;
   const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const ICONS = {
@@ -147,7 +148,7 @@ $(document).ready(() => {
 
 
     //CURRENT INFO
-    const currTemp = calcTemp(formData.units, tempData.currentTemp.temp);
+    const currTemp = tempData.currentTemp.temp;
     const symbol = ((formData.units === 'Celcius') ? '&#8451' : '&#8457');
 
     $currentInfo.append(`<p><strong>Currently in ${tempData.city}:</strong></p>`);
@@ -155,8 +156,8 @@ $(document).ready(() => {
     $currentInfo.append(`<h2 class="center-align">${currTemp}${symbol} <i class="${ICONS[tempData.currentIcon]}"></i></h2>`);
 
     //SUMMARY INFO
-    const highTemp = calcTemp(formData.units, tempData.highTemp.temp);
-    const lowTemp = calcTemp(formData.units, tempData.lowTemp.temp);
+    const highTemp = tempData.highTemp.temp;
+    const lowTemp = tempData.lowTemp.temp;
 
     $summaryInfo.append('<p><strong>8-hr Summary:</strong></p>');
     $summaryInfo.append(`<p class="truncate">High: ${highTemp}<sup>o</sup> @ ${tempData.highTemp.timestamp}, Low: ${lowTemp}<sup>o</sup> @ ${tempData.lowTemp.timestamp}`);
@@ -200,6 +201,7 @@ $(document).ready(() => {
     let latitude;
     let city;
     let tempData;
+    let units = (formData.units === "Celcius") ? "si" : "us";
 
     // Error checking for each AJAX call
     $.ajaxSetup({
@@ -218,18 +220,20 @@ $(document).ready(() => {
       city = googleData.results[0].address_components[1].short_name;
 
       //Call for Dark Sky data
-      const $xhr_darksky = $.getJSON(`${CORS_PROXY}https://api.darksky.net/forecast/4425e1c1ccfdf34f99ecc35f208760b3/${latitude},${longitude}`);
+      const $xhr_darksky = $.getJSON(`${CORS_PROXY}https://api.darksky.net/forecast/4425e1c1ccfdf34f99ecc35f208760b3/${latitude},${longitude}?exclude=minutely&units=${units}`);
 
       //currentTemp, highTemp, and lowTemp are objects containing the temperature and timestamp
       $xhr_darksky.done((darkskyData) => {
         tempData = {
           currentTemp: getForecastObject(darkskyData.currently.temperature, darkskyData.currently.time),
           currentIcon: darkskyData.currently.icon,
-          dayIcon: darkskyData.daily.icon,
+          dayIcon: darkskyData.hourly.icon,
           highTemp: getHighTemp(darkskyData.hourly.data),
           lowTemp: getLowTemp(darkskyData.hourly.data),
           city,
         };
+
+        console.log(darkskyData);
 
         const date = new Date(darkskyData.currently.time*1000);
         tempData.currentDate = `${DAYS[date.getDay()]} ${MONTHS[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
@@ -268,7 +272,6 @@ $(document).ready(() => {
     outfit[1] = BOTTOMS[dailyConditions];
     outfit[2] = OUTER[dailyConditions];
     outfit[3].push(((tempData.currentIcon === 'rain' || tempData.dayIcon === 'rain') ? ACCESSORIES.rain : 'None'));
-    // outfit[4] = (!!((dailyConditions === 'cold' || dailyConditions === 'cool' || tempData.currentIcon === 'rain' || tempData.dayIcon === 'rain')));
 
     outfit[4] = (dailyConditions === 'cold' || dailyConditions === 'cool' || tempData.currentIcon === 'rain' || tempData.dayIcon === 'rain');
 
@@ -289,7 +292,7 @@ $(document).ready(() => {
   function getHighTemp(array) {
     let maxTemp = Number.MIN_SAFE_INTEGER;
     let maxTempTime;
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < SUM_HOURS; i++) {
       if (array[i].temperature > maxTemp) {
         maxTemp = array[i].temperature;
         maxTempTime = array[i].time;
@@ -303,7 +306,7 @@ $(document).ready(() => {
     const forecastObj = {};
     let minTemp = Number.MAX_SAFE_INTEGER;
     let minTempTime;
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < SUM_HOURS; i++) {
       if (array[i].temperature < minTemp) {
         minTemp = array[i].temperature;
         minTempTime = array[i].time;
@@ -315,9 +318,5 @@ $(document).ready(() => {
 
   function formatMinutes(minutes) {
     return (minutes < 10) ? `0${minutes}` : minutes;
-  }
-
-  function calcTemp(unit, temp) {
-    return (unit === 'Celcius') ? Math.round((temp - 32) * (5 / 9)) : temp;
   }
 });
