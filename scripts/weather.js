@@ -3,7 +3,7 @@ $(document).ready(() => {
     const CORS_PROXY = "http://galvanize-cors-proxy.herokuapp.com/";
     const ZIP_REGEX = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
     const NICKNAME_REGEX = /^[A-Za-z0-9_\-]{4,}$/;
-    const SUM_HOURS = 2;
+    const SUM_HOURS = 8;
     const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const ICONS = {
@@ -233,7 +233,6 @@ $(document).ready(() => {
                     city,
                 };
 
-                console.log(darkskyData);
 
                 const date = new Date(darkskyData.currently.time * 1000);
                 tempData.currentDate = `${DAYS[date.getDay()]} ${MONTHS[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
