@@ -258,8 +258,6 @@ $(document).ready(() => {
 
         let dailyAverage = Math.round((tempData.currentTemp.temp + tempData.highTemp.temp + tempData.lowTemp.temp) / 3);
         let dailyConditions = getCondition(dailyAverage,formData);
-        console.log(dailyConditions);
-        console.log(dailyAverage);
 
         //Set the outfit based on dailyConditions
         outfit[0] = TOPS[dailyConditions];
